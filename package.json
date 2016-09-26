@@ -1,0 +1,11 @@
+{
+  "name": "boss-media-www",
+  "version": "0.0.1",
+  "description": "Boss Media website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Gaumond",
+  "license": "ISC"
+}

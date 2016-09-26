@@ -1,0 +1,16 @@
+)]}
+{
+ "version": 3,
+ "sources": "/Users/bengaumond/Programming/boss-media-www/src-server/index.js",
+ "file": "/Users/bengaumond/Programming/boss-media-www/dist-server/index.js",
+ "sourceRoot": "",
+ "names": [
+  "port",
+  "get",
+  "server",
+  "listen",
+  "on",
+  "log"
+ ],
+ "mappings": ";;AAAA;;AACA;;;;;;AAEA,IAAMA,OAAO,cAAIC,GAAJ,CAAQ,MAAR,CAAb;AACA,IAAMC,SAAS,cAAIC,MAAJ,CAAWH,IAAX,EAAiB,SAAjB,CAAf;;AAEAE,OAAOE,EAAP,CAAU,WAAV,EAAuB;AAAA,SAAMC,kDAAgDL,IAAhD,CAAN;AAAA,CAAvB"
+}

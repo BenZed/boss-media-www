@@ -1,0 +1,14 @@
+)]}
+{
+ "version": 3,
+ "sources": "/Users/bengaumond/Programming/boss-media-www/src-server/middleware/not-found-handler.js",
+ "file": "/Users/bengaumond/Programming/boss-media-www/dist-server/middleware/not-found-handler.js",
+ "sourceRoot": "",
+ "names": [
+  "req",
+  "res",
+  "next",
+  "NotFound"
+ ],
+ "mappings": ";;;;;;kBAEe,YAAW;;AAExB,SAAO,UAASA,GAAT,EAAaC,GAAb,EAAiBC,IAAjB,EAAuB;AAC5BA,SAAK,IAAI,yBAAOC,QAAX,CAAoB,gBAApB,CAAL;AACD,GAFD;AAID,C;;AARD"
+}

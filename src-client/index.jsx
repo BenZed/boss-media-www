@@ -3,9 +3,9 @@ import 'normalize.css'
 import './styles/main.scss'
 
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { Navigation } from './components'
-import { Main } from './pages'
+import { Main, Videos, BehindTheScenes, TheGang } from './pages'
 import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 
 /******************************************************************************/
@@ -15,7 +15,7 @@ import { IndexRoute, Router, Route, browserHistory } from 'react-router'
 window.onload = () => {
 
   const mainTag = document.getElementsByTagName('main')[0]
-  ReactDOM.render(<Website/>, mainTag)
+  render(<Website/>, mainTag)
 
 }
 
@@ -27,6 +27,9 @@ function Website() {
   return <Router history={browserHistory} >
     <Route path='/' component={Navigation} >
       <IndexRoute component={Main} />
+      <Route path='/videos' component={Videos}/>
+      <Route path='/behind-the-scenes' component={BehindTheScenes}/>
+      <Route path='/the-gang' component={TheGang}/>
     </Route>
   </Router>
 }

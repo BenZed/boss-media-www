@@ -1,5 +1,6 @@
 import is from 'is-explicit'
-//import 'source-map-support/register'
+import path from 'path'
+import { addPath } from 'app-module-path'
 
 /******************************************************************************/
 // Log Methods
@@ -11,7 +12,7 @@ function log(/*args*/) {
 
 log.types = {};
 
-['debug', 'info', 'error'].forEach(type => {
+['debug', 'info', 'error', 'db'].forEach(type => {
   log.types[type] = true
   log[type] = function() {
     if (this.types[type])
@@ -20,6 +21,12 @@ log.types = {};
 })
 
 Object.seal(log)
+
+/******************************************************************************/
+// Local Module Require
+/******************************************************************************/
+
+addPath(path.resolve(__dirname, '../dist-iso-modules'))
 
 /******************************************************************************/
 // Globals

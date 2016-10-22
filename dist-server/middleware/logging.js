@@ -3,9 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = initialize;
-function initialize(app) {
-  //eslint-disable-line no-unused-vars
+
+exports.default = function () {
 
   return function (error, req, res, next) {
     if (error) {
@@ -21,5 +20,4 @@ function initialize(app) {
 
     next(error);
   };
-}
-//# sourceMappingURL=/Users/bengaumond/Programming/boss-media-www/dist-server-src-maps/middleware/logging.js.map
+};

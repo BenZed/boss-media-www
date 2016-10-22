@@ -19,9 +19,17 @@
     "rules": {
       "react/jsx-uses-react": "error",
       "react/jsx-uses-vars": "error",
+      "react/jsx-no-undef": "error",
+      "react/jsx-no-duplicate-props": "error",
+      "react/jsx-boolean-value": "error",
+      "react/jsx-pascal-case": "error",
+      "jsx-quotes": ["error", "prefer-single"],
+      "indent": [
+        "error",
+        2
+      ],
       "no-var": "error",
       "prefer-const": "error",
-      "no-extra-parens": "error",
       "linebreak-style": [
         "error",
         "unix"
@@ -33,15 +41,15 @@
       "semi": [
         "error",
         "never"
-      ],
-      "indent": [
-        "error",
-        2
       ]
   },
     "globals": {
       "is": false,
-      "React": false,
-      "log": false
+      "log": false,
+      "addEvent": false,
+      "removeEvent": false,
+      "$": false,
+      "jQuery": false,
+      "freewall": false
     }
 }

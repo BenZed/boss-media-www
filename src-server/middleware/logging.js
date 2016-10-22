@@ -1,4 +1,4 @@
-export default function initialize(app) { //eslint-disable-line no-unused-vars
+export default function () {
 
   return function(error, req, res, next) {
     if (error) {

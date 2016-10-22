@@ -1,4 +1,12 @@
 {
   "host": "localhost",
-  "port": 3030
+  "port": 3030,
+  "public": "../dist-client/",
+  "auth": {
+    "idField": "id",
+    "token": {
+      "secret": "5xjJW5WW6quxxlTuNT8DkXVkCrZwGSDEXYYYQlWZ+onVCdkdlVJzGpa35vGFxSkxVLZSPCtlsykjezQKfnQrLw=="
+    },
+    "local": {}
+  }
 }

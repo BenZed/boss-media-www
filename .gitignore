@@ -1,2 +1,8 @@
 node_modules
-.DS_Store
+
+cache/portfolios.json
+cache/videos.json
+
+dist-server
+dist-iso-modules
+dist-client

@@ -28,7 +28,15 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
-    root: [ path.resolve(__dirname, '../src-iso-modules')]
+    root: [
+      path.resolve(__dirname, '../src-iso'),
+      path.resolve(__dirname, '../src-client')
+    ]
+  },
+  output : {
+    path: path.resolve(__dirname, '../dist-client/'),
+    publicPath: '/assets/',
+    filename: 'bundle.js'
   },
   externals: {
     'react': 'React',

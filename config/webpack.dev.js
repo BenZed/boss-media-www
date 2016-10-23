@@ -10,12 +10,6 @@ config.devServer = {
   hot: false
 }
 
-config.output =  {
-  path: path.resolve(__dirname, '../dist-client/'),
-  publicPath: '/assets/',
-  filename: 'bundle.js'
-}
-
 config.plugins.push(new HtmlPlugin({
   template: path.join(__dirname, '../src-client/development.html'),
   filename: 'index.html',

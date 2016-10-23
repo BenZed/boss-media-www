@@ -1,18 +1,18 @@
 {
   "name": "boss-media-www",
-  "version": "0.5",
+  "version": "1.0.0",
   "description": "Boss Media website",
   "main": "dist-server",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./test/test-helper.js 'test/**/*.@(js|jsx)'",
     "test-watch": "npm run test -- --watch",
     "build-client": "webpack --config ./config/webpack.production.js",
-    "build-iso": "babel ./src-iso-modules --out-dir ./dist-iso-modules",
+    "build-iso": "babel ./src-iso --out-dir ./dist-iso",
     "build-server": "babel ./src-server --out-dir ./dist-server",
     "dev-client": "webpack-dev-server --host 0.0.0.0 --port 5000 --history-api-fallback --config ./config/webpack.dev.js",
-    "dev-server": "npm run build-server -- --watch & npm run build-iso -- --watch & ./node_modules/.bin/nodemon --watch dist-server ./dist-server ",
-    "build": "rm -rf ./dist-client && rm -rf ./dist-iso-modules && rm -rf ./dist-server && npm run build-server & npm run build-iso & npm run build-client",
-    "start": "node ./dist-server"
+    "dev-server": "npm run build-server -- --watch & npm run build-iso -- --watch & ./node_modules/.bin/nodemon --watch dist-server  --watch dist-iso ./dist-server ",
+    "build": "rm -rf ./dist-client && rm -rf ./dist-iso && rm -rf ./dist-server && npm run build-server & npm run build-iso & npm run build-client",
+    "start": "node -r dotenv/config ./dist-server"
   },
   "author": "Ben Gaumond",
   "license": "ISC",
@@ -51,6 +51,7 @@
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
+    "dotenv": "^2.0.0",
     "express-history-api-fallback": "^2.0.0",
     "feathers": "^2.0.2",
     "feathers-configuration": "^0.3.3",

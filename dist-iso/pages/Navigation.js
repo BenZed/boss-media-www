@@ -9,6 +9,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Navigation(_ref) {
@@ -18,9 +20,19 @@ function Navigation(_ref) {
     'div',
     null,
     _react2.default.createElement(
-      'span',
-      null,
-      'NAV'
+      _reactRouter.Link,
+      { to: '/about' },
+      'About'
+    ),
+    _react2.default.createElement(
+      _reactRouter.Link,
+      { to: '/videos' },
+      'Videos'
+    ),
+    _react2.default.createElement(
+      _reactRouter.Link,
+      { to: '/hq' },
+      'Behind The Scenes'
     ),
     children
   );

@@ -20,7 +20,7 @@ function Home(_ref) {
     _react2.default.createElement(
       'span',
       null,
-      'HOME'
+      'Home'
     ),
     children
   );

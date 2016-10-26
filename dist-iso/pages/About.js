@@ -20,7 +20,7 @@ function About(_ref) {
     _react2.default.createElement(
       'span',
       null,
-      'ABOUT'
+      'About'
     ),
     children
   );

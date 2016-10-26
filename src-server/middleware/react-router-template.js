@@ -4,7 +4,7 @@ import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from 'components/routes'
+import routes from 'modules/routes'
 
 import { NotFound, GeneralError } from 'feathers-errors'
 

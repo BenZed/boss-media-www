@@ -1,6 +1,6 @@
 {
   "name": "boss-media-www",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "description": "Boss Media website",
   "main": "dist-server",
   "scripts": {
@@ -9,10 +9,10 @@
     "build-client": "webpack --config ./config/webpack.production.js",
     "build-iso": "babel ./src-iso --out-dir ./dist-iso",
     "build-server": "babel ./src-server --out-dir ./dist-server",
-    "dev-client": "webpack-dev-server --host 0.0.0.0 --port 5000 --history-api-fallback --config ./config/webpack.dev.js",
-    "dev-server": "npm run build-server -- --watch & npm run build-iso -- --watch & ./node_modules/.bin/nodemon --watch dist-server  --watch dist-iso ./dist-server ",
-    "build": "rm -rf ./dist-client && rm -rf ./dist-iso && rm -rf ./dist-server && npm run build-server & npm run build-iso & npm run build-client",
-    "start": "node -r dotenv/config ./dist-server"
+    "dev-client": "webpack-dev-server --config ./config/webpack.dev.js",
+    "dev-server": "npm run build-server -- --watch & npm run build-iso -- --watch & ./node_modules/.bin/nodemon --watch dist-server ./dist-server ",
+    "build": "rm -rf ./dist-client && rm -rf ./dist-iso-modules && rm -rf ./dist-server && npm run build-server & npm run build-iso & npm run build-client",
+    "start": "node ./dist-server"
   },
   "author": "Ben Gaumond",
   "license": "ISC",

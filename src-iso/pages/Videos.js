@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function About({children}) {
   return <div>
-    <span>About</span>
+    <span>Videos</span>
     {children}
   </div>
 }

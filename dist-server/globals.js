@@ -41,7 +41,7 @@ log.types = {};
 // Local Module Require
 /******************************************************************************/
 
-(0, _appModulePath.addPath)(_path2.default.resolve(__dirname, '../dist-iso-modules'));
+(0, _appModulePath.addPath)(_path2.default.resolve(__dirname, '../dist-iso'));
 
 /******************************************************************************/
 // Globals

@@ -4,6 +4,6 @@ cache/portfolios.json
 cache/videos.json
 
 dist-server
-dist-iso-modules
+dist-iso
 dist-client
 .env

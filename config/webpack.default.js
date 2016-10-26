@@ -34,7 +34,7 @@ module.exports = {
     ]
   },
   output : {
-    path: path.resolve(__dirname, '../dist-client/'),
+    path: path.resolve(__dirname, '../dist-client/assets'),
     publicPath: '/assets/',
     filename: 'bundle.js'
   },

@@ -26,7 +26,7 @@ Object.seal(log)
 // Local Module Require
 /******************************************************************************/
 
-addPath(path.resolve(__dirname, '../dist-iso-modules'))
+addPath(path.resolve(__dirname, '../dist-iso'))
 
 /******************************************************************************/
 // Globals

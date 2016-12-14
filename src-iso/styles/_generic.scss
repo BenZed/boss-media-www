@@ -1,0 +1,36 @@
+html {
+  background-color: $bg-primary-color;
+  color: $text-primary-color;
+}
+
+.padded {
+  padding: $padding;
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline;
+}
+
+.inline.block {
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex.inline {
+  display: inline-flex;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}

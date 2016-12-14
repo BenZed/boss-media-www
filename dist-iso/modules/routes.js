@@ -20,5 +20,6 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.IndexRoute, { component: _pages.Home }),
     _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _pages.About }),
     _react2.default.createElement(_reactRouter.Route, { path: '/videos', component: _pages.Videos }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/hq', component: _pages.HQ })
+    _react2.default.createElement(_reactRouter.Route, { path: '/hq', component: _pages.HeadQuarters }),
+    _react2.default.createElement(_reactRouter.Route, { path: '/nerdy', component: _pages.Nerdy })
 );

@@ -14,8 +14,8 @@ var _reactRouter = require('react-router');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function NavigationLink(_ref) {
-  var to = _ref.to;
-  var children = _ref.children;
+  var to = _ref.to,
+      children = _ref.children;
 
   return _react2.default.createElement(
     _reactRouter.Link,

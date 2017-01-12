@@ -38,10 +38,10 @@ module.exports = {
     publicPath: '/assets/',
     filename: 'bundle.js'
   },
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
-  },
+  // externals: {
+  //   'react': 'React',
+  //   'react-dom': 'ReactDOM'
+  // },
   plugins: [
     new ExtractTextPlugin('styles.css')
   ]

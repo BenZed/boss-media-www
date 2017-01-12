@@ -34,25 +34,7 @@ function Navigation(_ref2) {
   return _react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement(
-      'div',
-      { id: 'navigation' },
-      _react2.default.createElement(
-        NavigationLink,
-        { to: '/hq' },
-        'Behind The Scenes'
-      ),
-      _react2.default.createElement(
-        NavigationLink,
-        { to: '/videos' },
-        'Videos'
-      ),
-      _react2.default.createElement(
-        NavigationLink,
-        { to: '/about' },
-        'About'
-      )
-    ),
+    _react2.default.createElement('div', { id: 'navigation' }),
     children
   );
 }

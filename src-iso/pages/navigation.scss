@@ -1,4 +1,14 @@
 #navigation {
-  height: $header-height;
-  display: block;
+  
+  position: fixed;
+
+  left: 50%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  transition: left $time;
+
+  background-color: $bg-secondary-color;
+
 }

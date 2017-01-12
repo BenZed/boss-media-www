@@ -6,18 +6,19 @@ export const variables = {
 
   headerHeight: { value: 3, units: 'rem'},
 
-  fontHero: '\'Imperial One\'',
-  fontTitle: '\'Hunger Games\'',
-  fontBody: '\'Helevetica\''
+  fontHero: '\'OldSansBlack\'',
+  fontTitle: '\'OldSansBlack\'',
+  fontBody: '\'Helvetica\''
 
 }
 
 export const colors = {
 
   bgPrimaryColor: '#131412',
-  bgSecondaryColor: '#e0921d',
+  bgSecondaryColor: '#e05a15',
 
   textPrimaryColor: '#eeefef',
   textSecondaryColor: '#7a4e0d',
+
 
 }

@@ -27,6 +27,10 @@ html {
   display: inline-flex;
 }
 
+.flex.column {
+  flex-direction: column;
+}
+
 .right {
   float: right;
 }

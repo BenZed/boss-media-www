@@ -25,6 +25,7 @@
       "react/jsx-boolean-value": "error",
       "react/jsx-pascal-case": "error",
       "jsx-quotes": ["error", "prefer-single"],
+      "no-unused-vars": "warn",
       "indent": [
         "error",
         2

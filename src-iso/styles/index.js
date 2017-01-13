@@ -4,7 +4,7 @@ export const variables = {
   fontSize: { value: 14, units: 'px'},
   time: { value: 250, units: 'ms' },
 
-  headerHeight: { value: 3, units: 'rem'},
+  navWidth: { value: 5, units: 'rem'},
 
   fontHero: '\'OldSansBlack\'',
   fontTitle: '\'OldSansBlack\'',

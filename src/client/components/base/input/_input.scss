@@ -1,0 +1,54 @@
+%input {
+
+  &:not(.inline) {
+    width: 100%;
+  }
+
+  input, button, a {
+    background-color: inherit;
+    color: inherit;
+
+    font-size: 0.875em;
+    font-family: inherit;
+
+    padding: 0;
+
+    width: 100%;
+
+    border: none;
+    border-bottom: 1px solid;
+
+    transition: border-color $time;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+input:focus, a:focus {
+  border-color: $neutral-fill;
+}
+
+input::placeholder {
+  opacity: 0.4;
+}
+
+
+%input.success {
+  input, a {
+    border-color: $success-fill;
+  }
+}
+
+%input.warning {
+  input, a {
+    border-color: $warning-fill;
+  }
+}
+
+%input.error {
+  input, a {
+    border-color: $error-fill;
+  }
+}

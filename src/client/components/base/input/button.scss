@@ -1,0 +1,127 @@
+.button {
+  @extend %input;
+  @extend %branded;
+
+  box-sizing: border-box;
+
+  button {
+    @extend .clickable;
+    border-color: transparent;
+    background-color: initial;
+  }
+
+  &.button-round {
+
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    border: 1px solid transparent;
+    transition: border-color $time;
+
+    &:hover, &:active {
+      border-color: initial;
+    }
+
+    button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    button:hover, button:active {
+      border-color: transparent;
+    }
+
+  }
+
+  button:hover, button:active {
+    border-color: initial;
+  }
+
+  &.basic, &.dark, &.light {
+
+    border: none;
+    transition: background-color $time;
+
+    button:hover, button:active {
+      border-color: transparent;
+    }
+
+    &.success {
+      background-color: $success-fill;
+      color: $success-stroke;
+      fill: $success-stroke;
+
+      &:hover { background-color: lighten($success-fill, 5%) }
+      &:active { background-color: lighten($success-fill, 20%) }
+    }
+
+    &.neutral {
+      background-color: $neutral-fill;
+      color: $neutral-stroke;
+      fill: $neutral-stroke;
+
+      &:hover { background-color: lighten($neutral-fill, 5%) }
+      &:active { background-color: lighten($neutral-fill, 20%) }
+    }
+
+    &.warning {
+      background-color: $warning-fill;
+      color: $warning-stroke;
+      fill: $warning-stroke;
+
+      &:hover { background-color: lighten($warning-fill, 5%) }
+      &:active { background-color: lighten($warning-fill, 20%) }
+    }
+
+    &.error {
+      background-color: $error-fill;
+      color: $error-stroke;
+      fill: $error-stroke;
+
+      &:hover { background-color: lighten($error-fill, 5%) }
+      &:active { background-color: lighten($error-fill, 20%) }
+    }
+
+  }
+
+  &.basic:not(.success):not(.neutral):not(.warning):not(.error),
+  &.light:not(.success):not(.neutral):not(.warning):not(.error) {
+    &:hover {
+      background-color: fade_out($dark-fill, 0.5);
+      color: $dark-stroke;
+      fill: $dark-stroke;
+    }
+    &:active {
+      background-color: $dark-fill;
+    }
+  }
+
+  &.dark:not(.success):not(.neutral):not(.warning):not(.error) {
+    &:hover {
+      background-color: fade_out($light-fill, 0.5);
+      color: $light-stroke;
+      fill: $light-stroke;
+    }
+    &:active {
+      background-color: $light-fill;
+    }
+  }
+
+}
+
+.button.dark:not(.padded), .button.basic:not(.padded), .button.light:not(.padded) {
+  padding: 0.15em 0.35em 0.15em 0.35em;
+}
+
+.button.button-round.padded {
+  padding: 0.6em;
+}

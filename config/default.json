@@ -1,12 +1,7 @@
 {
-  "host": "localhost",
-  "port": 3030,
-  "public": "../dist-client/",
-  "auth": {
-    "idField": "id",
-    "token": {
-      "secret": "5xjJW5WW6quxxlTuNT8DkXVkCrZwGSDEXYYYQlWZ+onVCdkdlVJzGpa35vGFxSkxVLZSPCtlsykjezQKfnQrLw=="
-    },
-    "local": {}
-  }
+  "host": "192.168.1.32",
+  "port": 5500,
+  "public": "../dist/public/",
+  "buckateer": null,
+  "mongodb": "mongodb://localhost:27017/boss-www-develop",
 }

@@ -1,0 +1,140 @@
+.dropdown {
+  @extend %input;
+
+  a {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .dropdown-items {
+    &.hiding, &.hidden {
+      opacity: 0;
+      line-height: 0%;
+    }
+
+    opacity: 1;
+    line-height: 100%;
+
+    transition: opacity $time, line-height $time;
+    position: absolute;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+
+    &:not(.neutral):not(.success):not(.error):not(.warning) .dropdown-item {
+
+      transition: opacity $time;
+
+      &:hover {
+        opacity: 0.65;
+      }
+
+      &.dropdown-item-active {
+        opacity: 0.3;
+      }
+    }
+
+    &.neutral .dropdown-item {
+      &:hover {
+        background-color: fade-out($neutral-fill, 0.75);
+      }
+
+      &.dropdown-item-active {
+        background-color: $neutral-fill;
+        color: $neutral-stroke;
+      }
+    }
+
+    &.warning .dropdown-item {
+      &:hover {
+        background-color: fade-out($warning-fill, 0.75);
+      }
+
+      &.dropdown-item-active {
+        background-color: $warning-fill;
+        color: $warning-stroke;
+      }
+    }
+
+    &.error .dropdown-item {
+      &:hover {
+        background-color: fade-out($error-fill, 0.75);
+      }
+
+      &.dropdown-item-active {
+        background-color: $error-fill;
+        color: $error-stroke;
+      }
+    }
+
+    &.success .dropdown-item {
+      &:hover {
+        background-color: fade-out($success-fill, 0.75);
+      }
+
+      &.dropdown-item-active {
+        background-color: $success-fill;
+        color: $success-stroke;
+      }
+    }
+  }
+
+  &.dropdown-open .dropdown-items {
+    opacity: 1;
+  }
+
+  .dropdown-item {
+
+    list-style-type: none;
+    cursor: pointer;
+    transition: background-color $time;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+
+    a {
+      border: none;
+      background-color: transparent;
+    }
+
+    &:last-child {
+      padding-bottom: 0.25em;
+    }
+
+  }
+
+
+
+  a:focus + .dropdown-items {
+    display: block;
+  }
+
+  .dropdown-placeholder {
+    opacity: 0.5;
+  }
+
+  %icon-spacing {
+    margin-left: auto;
+    padding-left: 0.2em;
+  }
+
+  .dropdown-multi-counter {
+    @extend %icon-spacing;
+    align-self: flex-end;
+  }
+
+  .dropdown-caret {
+
+    @extend %branded;
+    @extend %icon-spacing;
+
+    margin-left: auto;
+    padding-left: 0.2em;
+
+    transition: transform $time;
+
+    &.dropdown-caret-up {
+      transform: translate(0.2em, 0) rotate(180deg);
+    }
+  }
+
+}

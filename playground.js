@@ -1,12 +1,26 @@
-import fs from 'fs-promise'
-import now from 'performance-now'
+class Foo {
+
+  state = 'idle'
+
+  bar() {
+    console.log(this.state)
+  }
+
+}
+
+const f = new Foo
+f.bar()
+
+function useState() {
+
+  this.state = 'working'
+  const { bar } = this
+
+  bar()
+
+}
 
 
-setTimeout(() => console.log('timeout done'), 500)
-const start = now()
-for (let i = 0; i < 2000000000; i++);
+f.useState = useState.bind(f)
 
-const end = now()
-
-
-console.log(end - start)
+f.useState()

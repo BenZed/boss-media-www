@@ -1,0 +1,7 @@
+.panel {
+  @extend %ellipsis;
+
+  box-sizing: border-box;
+  white-space: nowrap;
+  
+}

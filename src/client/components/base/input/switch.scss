@@ -1,0 +1,109 @@
+.switch {
+
+  .switch-container {
+    display: flex;
+    font-size: 0.85em;
+  }
+
+  &.switch-label-left .switch-node {
+    margin-left: 0.25em;
+  }
+  &:not(.switch-label-left) .switch-node {
+    margin-right: 0.25em;
+  }
+
+  .switch-node {
+    @extend .clickable;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 1.1em;
+    width: 1.1em;
+    font-size: 0.7em;
+
+    background-color: transparent;
+    transition: background-color $time;
+    border: 2px solid;
+  }
+
+  .switch-node {
+    border-color: $neutral-fill;
+    color: $neutral-fill;
+    fill: $neutral-fill;
+    &:hover { background-color: fade-out($neutral-fill, 0.8); }
+    &:active { background-color: $neutral-fill; }
+  }
+
+  &.switch-on {
+    .switch-node {
+      background-color: $neutral-fill;
+      color: $neutral-stroke;
+      fill: $neutral-stroke;
+      &:hover { background-color: fade-out($neutral-fill, 0.3); }
+    }
+  }
+
+  &.warning {
+    .switch-node {
+      border-color: $warning-fill;
+      color: $warning-fill;
+      fill: $warning-fill;
+      &:hover { background-color: fade-out($warning-fill, 0.8); }
+      &:active { background-color: $warning-fill; }
+    }
+
+    &.switch-on {
+      .switch-node {
+        background-color: $warning-fill;
+        color: $warning-stroke;
+        fill: $warning-stroke;
+        &:hover { background-color: fade-out($warning-fill, 0.3); }
+      }
+    }
+  }
+
+  &.error {
+    .switch-node {
+      border-color: $error-fill;
+      color: $error-fill;
+      fill: $error-fill;
+      &:hover { background-color: fade-out($error-fill, 0.8); }
+      &:active { background-color: $error-fill; }
+    }
+
+    &.switch-on {
+      .switch-node {
+        background-color: $error-fill;
+        color: $error-stroke;
+        fill: $error-stroke;
+        &:hover { background-color: fade-out($error-fill, 0.3); }
+      }
+    }
+  }
+
+  &.success {
+    .switch-node {
+      border-color: $success-fill;
+      color: $success-fill;
+      fill: $success-fill;
+      &:hover { background-color: fade-out($success-fill, 0.8); }
+      &:active { background-color: $success-fill; }
+    }
+
+    &.switch-on {
+      .switch-node {
+        background-color: $success-fill;
+        color: $success-stroke;
+        fill: $success-stroke;
+        &:hover { background-color: fade-out($success-fill, 0.3); }
+      }
+    }
+  }
+
+
+  &.switch-on .switch-node:active { background-color: transparent; }
+
+}

@@ -1,0 +1,22 @@
+.popover {
+
+  &.popover-open .popover-button .icon {
+    transform: scale(1.25, 1.25);
+  }
+
+  .popover-container {
+
+    margin-top: 0.25rem;
+    position: absolute;
+    z-index: 5;
+
+    overflow: hidden;
+    box-sizing: border-box;
+
+    transition: opacity $time;
+
+    &.hiding, &.showing {
+      opacity: 0;
+    }
+  }
+}

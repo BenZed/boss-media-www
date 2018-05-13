@@ -6,8 +6,9 @@ import './public/boss-media-www.css'
 /******************************************************************************/
 
 const dependencies = Promise.all([
-  import('@benzed/react'),
-  import('ui/components/website')
+  import('react'),
+  import('react-dom'),
+  import('../ui/root')
 ])
 
 /******************************************************************************/
@@ -16,12 +17,13 @@ const dependencies = Promise.all([
 
 window.addEventListener('load', async () => {
   const [
-    { React, render },
+    { default: React },
+    { hydrate },
     { default: Website }
   ] = await dependencies
 
   const tag = document.getElementById('boss-media-www')
   const element = <Website />
 
-  render(element, tag)
+  hydrate(element, tag)
 })

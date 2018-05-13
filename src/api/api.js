@@ -1,15 +1,15 @@
-import BossMediaWwwServer from '../api/server'
-import path from 'path'
-import { run } from '@benzed/app'
+import { App } from '@benzed/app'
 
 /******************************************************************************/
-// Setup
+// App
 /******************************************************************************/
 
-const CONFIG_URL = path.resolve(process.cwd(), 'config')
+class BossMediaWwwApi extends App {
+
+}
 
 /******************************************************************************/
-// Execute
+// Exports
 /******************************************************************************/
 
-BossMediaWwwServer::run(CONFIG_URL)
+export default BossMediaWwwApi

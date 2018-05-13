@@ -1,7 +1,7 @@
-// index file for sub components
+import Website from './website'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export { }
+export default Website

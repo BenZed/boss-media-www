@@ -1,14 +1,19 @@
-import { React } from '@benzed/react'
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+
+import { Home } from '../pages'
 
 /******************************************************************************/
 // Main
 /******************************************************************************/
 
-const Website = () =>
-  <div>boss-media-www</div>
+const Routes = () =>
+  <Switch>
+    <Route path='/' exact component={Home} />
+  </Switch>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default Website
+export default Routes

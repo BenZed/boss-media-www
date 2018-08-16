@@ -1,8 +1,11 @@
 {
-  "ui": {
-    "public": "",
-    "favicon": ""
+  "services": {},
+  "rest": {
+    "public": "./dist/public",
+    "favicon": null
   },
   "socketio": false,
-  "rest": false
+  "auth": false,
+  "port": 5100,
+  "logging": true
 }

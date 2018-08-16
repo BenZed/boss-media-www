@@ -1,5 +1,5 @@
 import 'normalize.css'
-import './public/boss-media-www.css'
+import './boss-media-www.css'
 
 /******************************************************************************/
 // Dynamic Dependencies
@@ -8,22 +8,58 @@ import './public/boss-media-www.css'
 const dependencies = Promise.all([
   import('react'),
   import('react-dom'),
-  import('../ui/root')
+  import('react-router-dom'),
+  import('../ui')
 ])
+
+/******************************************************************************/
+// Helper
+/******************************************************************************/
+
+function getServerProps () {
+  const serverPropsTag = document.getElementById('boss-media-www-server-props')
+
+  let props
+  try {
+    const json = serverPropsTag
+      .textContent
+
+    props = JSON.parse(json)
+  } catch (err) {
+    // it could be that the server sent bad data, but generally any failure
+    // will simply mean no data has been sent
+  }
+
+  // make double sure we're sending back an object
+  return props !== null && typeof props === 'object'
+    ? props
+    : {}
+
+}
+
+function getMainTag () {
+  return document.getElementById('boss-media-www')
+}
 
 /******************************************************************************/
 // Execute
 /******************************************************************************/
 
 window.addEventListener('load', async () => {
+
   const [
     { default: React },
     { hydrate },
-    { default: Website }
+    { BrowserRouter },
+    { Website }
   ] = await dependencies
 
-  const tag = document.getElementById('boss-media-www')
-  const element = <Website />
+  const props = getServerProps()
+  const main = getMainTag()
 
-  hydrate(element, tag)
+  const element = <BrowserRouter>
+    <Website {...props} />
+  </BrowserRouter>
+
+  hydrate(element, main)
 })

@@ -1,36 +1,45 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Navigation from './navigation'
-import Routes from './routes'
-import { GlobalStyle } from '@benzed/react'
-
-import { theme } from '../theme'
+import { Slide, Fade } from '@benzed/react'
 
 /******************************************************************************/
-// Styles
+//
 /******************************************************************************/
 
-const WebsiteLayout = styled.div`
+const Title = styled.div`
   display: flex;
-  flex-grow: 1;
-  flex-direction: row;
+  width: 100%;
+  font-size: 2em;
+`
+
+const Layout = styled.div`
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  bottom: 0.5em;
+  right: 6.5em;
 `
 
 /******************************************************************************/
-// Main
+// Main Component
 /******************************************************************************/
 
-const Website = () =>
-  <GlobalStyle theme={theme}>
-    <WebsiteLayout>
-      <Routes />
-      <Navigation />
-    </WebsiteLayout>
-  </GlobalStyle>
+const Page = ({ children, title, path, exact, strict, delay, ...props }) =>
+  <Fade>
+    <Layout {...props}>
+      { title
+        ? <Slide from='top'>
+          <Title>{title}</Title>
+        </Slide>
+        : null
+      }
+      {children}
+    </Layout>
+  </Fade>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default Website
+export default Page

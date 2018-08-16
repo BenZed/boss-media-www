@@ -1,6 +1,5 @@
-import BossMediaWwwServer from '../api/server'
+import BossMediaWwwServer from '../api'
 import path from 'path'
-import { run } from '@benzed/app'
 
 /******************************************************************************/
 // Setup
@@ -12,4 +11,4 @@ const CONFIG_URL = path.resolve(process.cwd(), 'config')
 // Execute
 /******************************************************************************/
 
-BossMediaWwwServer::run(CONFIG_URL)
+BossMediaWwwServer.run(CONFIG_URL)

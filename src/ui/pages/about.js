@@ -1,24 +1,16 @@
-import { App } from '@benzed/app'
-import * as services from './services'
-
-import Website from '../ui/root'
+import React from 'react'
+import styled from 'styled-components'
+import Page from './Page'
 
 /******************************************************************************/
-// App
+// Main
 /******************************************************************************/
 
-class BossMediaWwwServer extends App {
-
-  services = services
-
-  getClientComponent () {
-    return Website
-  }
-
-}
+const AboutPage = () =>
+  <Page title='about' />
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default BossMediaWwwServer
+export default AboutPage

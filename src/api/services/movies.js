@@ -1,19 +1,10 @@
-import { App } from '@benzed/app'
-import * as services from './services'
-
-import Website from '../ui/root'
+import { Service } from '@benzed/app'
 
 /******************************************************************************/
-// App
+// Main
 /******************************************************************************/
 
-class BossMediaWwwServer extends App {
-
-  services = services
-
-  getClientComponent () {
-    return Website
-  }
+class MovieService extends Service {
 
 }
 
@@ -21,4 +12,4 @@ class BossMediaWwwServer extends App {
 // Exports
 /******************************************************************************/
 
-export default BossMediaWwwServer
+export default MovieService

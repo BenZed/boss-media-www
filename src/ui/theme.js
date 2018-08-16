@@ -1,15 +1,27 @@
-import { App } from '@benzed/app'
-
-/******************************************************************************/
-// App
-/******************************************************************************/
-
-class BossMediaWwwApi extends App {
-
-}
+import { themes, Color, Styler } from '@benzed/react'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default BossMediaWwwApi
+const theme = {
+  ...themes.basic,
+  primary: Color('darkorange'),
+  fonts: {
+    title: 'Arial Black',
+    body: 'Helvetica'
+  }
+}
+
+const $ = Styler.createInterface(theme)
+
+/******************************************************************************/
+// Exports
+/******************************************************************************/
+
+export default $
+
+export {
+  theme,
+  $
+}

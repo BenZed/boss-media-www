@@ -1,9 +1,9 @@
-import Website from './root'
+import movies from './movies'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default Website
-
-export { Website }
+export {
+  movies
+}

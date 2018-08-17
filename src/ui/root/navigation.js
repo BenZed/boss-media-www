@@ -8,6 +8,8 @@ import { NavLink } from 'react-router-dom'
 
 import { $ } from '../theme'
 
+import { LayerPortal } from '../layer-manager'
+
 /******************************************************************************/
 // Data
 /******************************************************************************/
@@ -22,71 +24,22 @@ const Title = styled.h1`
   font-size: 10vw;
   transform: scale(1, 1.1);
   letter-spacing: -0.07em;
-  position: absolute;
+  position: relative;
+  left: 0.155em;
 
-  top: 50%;
+  width: 100%;
+  height: 100%;
 
   transition: transform ${TIME}ms;
+
+  color: ${$.prop('fore')
+    .mut((v, p) => v ? p.theme.bg : p.theme.fg)
+    .mut(v => String(v))};
+
+  background-color: ${$.prop('fore')
+    .mut((v, p) => v ? p.theme.primary : 'transparent')
+    .mut(v => String(v))};
 `
-
-const Container = styled.div`
-  flex-basis: ${$.prop('visibility').mut(v => v === 'shown' ? '50%' : '0%')};
-
-  background-color: ${$.theme.primary.mut(v => String(v))};
-  margin-left: auto;
-
-  transition: flex-basis ${TIME}ms;
-  position: relative;
-
-  display: flex;
-
-`::Visible.observe(true)
-
-const Links = styled.div.attrs({
-  children: props => props
-    .to
-    .map(link => <NavLink key={link} to={`/${link}`}>{link}</NavLink>)
-})`
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 1em;
-
-  a {
-    text-decoration: none;
-    flex-shrink: 1;
-    flex-basis: 4em;
-  }
-
-`
-
-const Boss = Title.extend.attrs({
-  children: 'BOSS'
-})`
-
-  right: calc(50vw + 0.2em);
-
-  transform: ${$.prop('visibility').mut(v => v !== 'shown'
-  ? 'translate(-100vw, -50%)'
-  : 'translate(0vw, -50%)')
-  };
-
-`::Visible.observe(false)
-
-const Media = Title.extend.attrs({
-  children: 'MEDIA'
-})`
-
-  left: 0.115em;
-
-  transform: ${$.prop('visibility').mut(v => v !== 'shown'
-  ? 'translate(100vw, -50%)'
-  : 'translate(0vw, -50%)')
-  };
-
-  color: ${$.theme.bg.mut(v => v.toString())};
-`::Visible.observe(false)
 
 /******************************************************************************/
 // Main Component
@@ -96,19 +49,9 @@ const Navigation = ({ children, location, ...props }) => {
 
   const isAtHome = !!matchPath(location.pathname, { path: '/', exact: true })
 
-  return <Visible visible={isAtHome} delay={TIME}>
-    <Container>
-
-      <Links to={[
-        'about',
-        'videos',
-        'vault'
-      ]}/>
-
-      <Boss/><Media/>
-
-    </Container>
-  </Visible>
+  return <LayerPortal key='light'>
+    <Title>BOSS MEDIA</Title>
+  </LayerPortal>
 }
 
 /******************************************************************************/

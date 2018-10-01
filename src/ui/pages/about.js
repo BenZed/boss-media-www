@@ -1,13 +1,17 @@
 import React from 'react'
-import styled from 'styled-components'
 import Page from './Page'
 
 /******************************************************************************/
 // Main
 /******************************************************************************/
 
-const AboutPage = () =>
-  <Page title='about' />
+const AboutPage = props =>
+  <Page title='about' points={[
+    -25, -25,
+    -25, -25,
+    50, -25,
+    -25, 50
+  ]}/>
 
 /******************************************************************************/
 // Exports

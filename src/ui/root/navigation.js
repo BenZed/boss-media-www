@@ -1,14 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Visible } from '@benzed/react'
-
-import { withRouter, matchPath } from 'react-router'
-import { NavLink } from 'react-router-dom'
-
+import { observe } from '@benzed/react'
+import { withRouter } from 'react-router'
 import { $ } from '../theme'
-
-import { LayerPortal } from '../layer-manager'
 
 /******************************************************************************/
 // Data
@@ -27,17 +22,21 @@ const Title = styled.h1`
   position: relative;
   left: 0.155em;
 
-  width: 100%;
-  height: 100%;
-
   transition: transform ${TIME}ms;
 
-  color: ${$.prop('fore')
-    .mut((v, p) => v ? p.theme.bg : p.theme.fg)
-    .mut(v => String(v))};
+  color: ${$
+    .prop('fore')
+    .mut((v, p) => v
+      ? p.theme.bg
+      : p.theme.fg)
+    .mut(String)};
 
-  background-color: ${$.prop('fore')
-    .mut((v, p) => v ? p.theme.primary : 'transparent')
+  background-color: ${$
+    .prop('fore')
+    .mut((v, p) => v
+      ? p.theme.primary
+      : 'transparent'
+    )
     .mut(v => String(v))};
 `
 
@@ -45,17 +44,11 @@ const Title = styled.h1`
 // Main Component
 /******************************************************************************/
 
-const Navigation = ({ children, location, ...props }) => {
-
-  const isAtHome = !!matchPath(location.pathname, { path: '/', exact: true })
-
-  return <LayerPortal key='light'>
-    <Title>BOSS MEDIA</Title>
-  </LayerPortal>
-}
+const Navigation = ({ children, location, layers, ...props }) =>
+  <Title>{layers.test}</Title>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default withRouter(Navigation)
+export default withRouter(Navigation)::observe('layers')

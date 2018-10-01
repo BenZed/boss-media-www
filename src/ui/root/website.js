@@ -1,25 +1,63 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import LayerManager from '../layer-manager'
-import Navigation from './navigation'
-import Routes from './routes'
+import { Layer, Mask } from '../layer'
 
-import { GlobalStyle } from '@benzed/react'
+// import Navigation from './navigation'
 
-import { theme } from '../theme'
+import { VisibleRoute } from '../components'
+import { GlobalStyle, StoreProvider } from '@benzed/react'
+
+import { $, theme } from '../theme'
+
+import { Home, Vault, Videos, About } from '../pages'
+
+import { NavLink } from 'react-router-dom'
+
+/******************************************************************************/
+//
+/******************************************************************************/
+
+const PrimaryLayer = styled(Layer).attrs({
+  z: $.theme.baseZ.valueOf(),
+  clipped: true
+})`
+  background-color: ${$.theme.primary};
+`
 
 /******************************************************************************/
 // Main
 /******************************************************************************/
 
-const Website = () =>
-  <GlobalStyle theme={theme}>
-    <LayerManager>
-      <Routes />
-      <Navigation />
-    </LayerManager>
-  </GlobalStyle>
+class Website extends React.Component {
+
+  mask = new Mask()
+
+  render () {
+
+    const { mask } = this
+
+    return <StoreProvider mask={mask}>
+
+      <GlobalStyle theme={theme}>
+
+        <PrimaryLayer>
+          <NavLink to='/'>home</NavLink>
+          <NavLink to='/about'>about</NavLink>
+        </PrimaryLayer>
+
+        <VisibleRoute path='/' exact component={Home} />
+        <VisibleRoute path='/about' component={About} />
+        {/*
+        <VisibleRoute path='/videos' component={Videos} />
+        <VisibleRoute path='/vault' component={Vault} />
+        */}
+
+      </GlobalStyle>
+
+    </StoreProvider>
+  }
+}
 
 /******************************************************************************/
 // Exports

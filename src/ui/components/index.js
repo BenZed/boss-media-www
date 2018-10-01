@@ -1,7 +1,7 @@
-// index file for sub components
+import VisibleRoute from './visible-route'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export { }
+export { VisibleRoute }

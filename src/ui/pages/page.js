@@ -1,45 +1,36 @@
 import React from 'react'
-import styled from 'styled-components'
-
-import { Slide, Fade } from '@benzed/react'
-
-/******************************************************************************/
-//
-/******************************************************************************/
-
-const Title = styled.div`
-  display: flex;
-  width: 100%;
-  font-size: 2em;
-`
-
-const Layout = styled.div`
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-  bottom: 0.5em;
-  right: 6.5em;
-`
+import { Visible, observe } from '@benzed/react'
 
 /******************************************************************************/
 // Main Component
 /******************************************************************************/
 
-const Page = ({ children, title, path, exact, strict, delay, ...props }) =>
-  <Fade>
-    <Layout {...props}>
-      { title
-        ? <Slide from='top'>
-          <Title>{title}</Title>
-        </Slide>
-        : null
-      }
-      {children}
-    </Layout>
-  </Fade>
+class Page extends React.Component {
+
+  setMask () {
+    const { points, mask } = this.props
+    if (points)
+      mask.push(points)
+  }
+
+  componentDidMount () {
+    if (this.props.visibility === 'shown')
+      this.setMask()
+  }
+
+  componentDidUpdate (prev) {
+    if (this.props.visibility.includes('show') && prev.visibility !== 'shown')
+      this.setMask()
+  }
+
+  render () {
+    return this.props.title
+  }
+
+}
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default Page
+export default Page::observe('mask')::Visible.observe()

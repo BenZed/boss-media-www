@@ -1,11 +1,13 @@
-import LayerManager from './layer-manager'
-
-import LayerPortal from './layer-portal'
+import Mask from './mask'
+import Layer from './layer'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default LayerManager
+export default Layer
 
-export { LayerPortal }
+export {
+  Mask,
+  Layer
+}

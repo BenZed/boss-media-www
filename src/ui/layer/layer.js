@@ -1,9 +1,8 @@
-import React from 'react'
+// import React from 'react'
 import styled from 'styled-components'
+import { observe } from '@benzed/react'
 
 import $ from '../theme'
-
-const TIME = 400
 
 /******************************************************************************/
 // Helper
@@ -20,16 +19,18 @@ function vectorToScreen (vector) {
 const Layer = styled.div.attrs({
   style: props => {
 
-    const { clip } = props
+    const { clipped, mask } = props
 
-    return clip
+    return clipped
       ? {
         clipPath: `polygon(${
-          clip.map(vectorToScreen).join(', ')
+          mask
+            .vectors
+            .map(vectorToScreen)
+            .join(', ')
         })`
       }
       : null
-
   }
 })`
 
@@ -37,7 +38,7 @@ const Layer = styled.div.attrs({
   height: 100vh;
 
   z-index: ${$.prop('z')};
-  transition: clip-path ${TIME}ms;
+  transition: clip-path ${$.theme.time}ms;
   position: absolute;
 
 `
@@ -46,4 +47,4 @@ const Layer = styled.div.attrs({
 // Exports
 /******************************************************************************/
 
-export default Layer
+export default Layer::observe('mask')

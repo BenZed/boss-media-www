@@ -1,11 +1,7 @@
-import PlaylistService from './playlists'
-import VideoService from './videos'
+const { BabelConfig } = require('@benzed/dev')
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export {
-  PlaylistService,
-  VideoService
-}
+module.exports = new BabelConfig()

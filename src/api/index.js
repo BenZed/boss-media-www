@@ -1,7 +1,7 @@
-import Server from './server'
+import BossMediaServer from './server'
 
 /******************************************************************************/
-// Exports
+// exports
 /******************************************************************************/
 
-export default Server
+export default BossMediaServer

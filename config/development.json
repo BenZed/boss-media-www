@@ -1,18 +1,6 @@
 {
-  "services": {
-    "movies": true
-  },
-  "mongodb": {
-    "hosts": "localhost:7200",
-    "database": "boss-media-development",
-    "dbpath": "./storage"
-  },
-  "rest": {
-    "public": "./dist/public",
-    "favicon": null
-  },
-  "socketio": false,
-  "auth": false,
-  "port": 7100,
-  "logging": true
+  "youtube": {
+    "api_key": null,
+    "user_name": "BossMediaVideos"
+  }
 }

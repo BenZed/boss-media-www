@@ -61,7 +61,7 @@ const Links = styled.div.attrs({
 
 `
 
-const Boss = Title.extend.attrs({
+const Boss = styled(Title).attrs({
   children: 'BOSS'
 })`
 
@@ -74,7 +74,7 @@ const Boss = Title.extend.attrs({
 
 `::Visible.observe(false)
 
-const Media = Title.extend.attrs({
+const Media = styled(Title).attrs({
   children: 'MEDIA'
 })`
 

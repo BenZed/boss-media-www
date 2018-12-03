@@ -13,33 +13,57 @@ const dependencies = Promise.all([
 ])
 
 /******************************************************************************/
+// Data
+/******************************************************************************/
+
+const DEV = process.env.NODE_ENV === 'development'
+
+/******************************************************************************/
 // Helper
 /******************************************************************************/
 
-function getServerProps () {
-  const serverPropsTag = document.getElementById('boss-media-www-server-props')
+let getServerProps
 
-  let props
-  try {
-    const json = serverPropsTag
-      .textContent
+if (DEV)
+  getServerProps = async () => {
 
-    props = JSON.parse(json)
-  } catch (err) {
-    // it could be that the server sent bad data, but generally any failure
-    // will simply mean no data has been sent
+    const { default: Client } = await import('@benzed/dev/lib/test-util/test-client')
+    const { port } = await import('../../config/default.json')
+
+    const client = new Client({
+      port,
+      provider: 'rest'
+    })
+
+    // In production, we wont need a feathers side client because all this
+    // information will be serialized in the request.
+
+    const playlists = await client.service('playlists').find({})
+    const videos = await client.service('videos').find({})
+
+    return { playlists, videos }
   }
 
-  // make double sure we're sending back an object
-  return props !== null && typeof props === 'object'
-    ? props
-    : {}
+else
+  getServerProps = () => {
+    const serverPropsTag = document.getElementById('boss-media-www-server-props')
 
-}
+    let props
+    try {
+      props = JSON.parse(serverPropsTag.textContent)
+    } catch (err) {
+      // it could be that the server sent bad data, but generally any failure
+      // will simply mean no data has been sent
+    }
 
-function getMainTag () {
-  return document.getElementById('boss-media-www')
-}
+    // make double sure we're sending back an object
+    return props !== null && typeof props === 'object'
+      ? props
+      : {}
+  }
+
+const getMainTag = () =>
+  document.getElementById('boss-media-www')
 
 /******************************************************************************/
 // Execute
@@ -54,7 +78,7 @@ window.addEventListener('load', async () => {
     { Website }
   ] = await dependencies
 
-  const props = getServerProps()
+  const props = await getServerProps()
   const main = getMainTag()
 
   const element = <BrowserRouter>

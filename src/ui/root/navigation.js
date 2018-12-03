@@ -40,6 +40,33 @@ const Title = styled.h1`
     .mut(v => String(v))};
 `
 
+const Boss = styled(Title).attrs({
+  children: 'BOSS'
+})`
+
+  right: calc(50vw + 0.2em);
+
+  transform: ${$.prop('visibility').mut(v => v !== 'shown'
+  ? 'translate(-100vw, -50%)'
+  : 'translate(0vw, -50%)')
+  };
+
+`::Visible.observe(false)
+
+const Media = styled(Title).attrs({
+  children: 'MEDIA'
+})`
+
+  left: 0.115em;
+
+  transform: ${$.prop('visibility').mut(v => v !== 'shown'
+  ? 'translate(100vw, -50%)'
+  : 'translate(0vw, -50%)')
+  };
+
+  color: ${$.theme.bg.mut(v => v.toString())};
+`::Visible.observe(false)
+
 /******************************************************************************/
 // Main Component
 /******************************************************************************/

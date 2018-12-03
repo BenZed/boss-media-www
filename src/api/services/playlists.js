@@ -1,6 +1,5 @@
 import App from '@benzed/app' // eslint-disable-line no-unused-vars
-import { PlaylistService, VideoService } from './services'
-import PopulateFromYoutube from './populate-from-youtube'
+import { disallow } from 'feathers-hooks-common'
 
 /* @jsx App.declareEntity */
 /* eslint-disable react */
@@ -9,22 +8,22 @@ import PopulateFromYoutube from './populate-from-youtube'
 // Main
 /******************************************************************************/
 
-const BossMediaServer = ({ port, logging, youtube }) =>
+const PlaylistService = () =>
 
-  <app port={port} logging={logging}>
+  <service name='playlists'>
 
-    <express />
+    <hooks before update patch remove>
+      {disallow()}
+    </hooks>
 
-    <PlaylistService />
-    <VideoService />
-    <PopulateFromYoutube youtube={youtube} />
+    <hooks before create>
+      {disallow('external')}
+    </hooks>
 
-    <express-error />
-
-  </app>
+  </service>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default BossMediaServer
+export default PlaylistService

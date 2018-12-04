@@ -1,19 +1,31 @@
 import App from '@benzed/app' // eslint-disable-line no-unused-vars
-import Service from './service'
+import { disallow } from 'feathers-hooks-common'
 
 /* @jsx App.declareEntity */
-/* eslint-disable react */
+/* eslint-disable react/react-in-jsx-scope */
 
 /******************************************************************************/
 // Main
 /******************************************************************************/
 
-const VideoService = () =>
+const Service = ({ name, children }) =>
 
-  <Service name='videos' />
+  <service name={name}>
+
+    <hooks before update patch remove>
+      {disallow()}
+    </hooks>
+
+    <hooks before create>
+      {disallow('external')}
+    </hooks>
+
+    {children}
+
+  </service>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default VideoService
+export default Service

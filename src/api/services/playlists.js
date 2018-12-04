@@ -1,5 +1,5 @@
 import App from '@benzed/app' // eslint-disable-line no-unused-vars
-import { disallow } from 'feathers-hooks-common'
+import Service from './service'
 
 /* @jsx App.declareEntity */
 /* eslint-disable react */
@@ -10,17 +10,7 @@ import { disallow } from 'feathers-hooks-common'
 
 const PlaylistService = () =>
 
-  <service name='playlists'>
-
-    <hooks before update patch remove>
-      {disallow()}
-    </hooks>
-
-    <hooks before create>
-      {disallow('external')}
-    </hooks>
-
-  </service>
+  <Service name='playlists' />
 
 /******************************************************************************/
 // Exports

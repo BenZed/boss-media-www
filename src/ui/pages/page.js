@@ -15,10 +15,11 @@ const Title = styled.div`
 
 const Layout = styled.div`
   position: absolute;
+  overflow-y: auto;
   top: 0.5em;
   left: 0.5em;
   bottom: 0.5em;
-  right: 6.5em;
+  right: 5em;
 `
 
 /******************************************************************************/

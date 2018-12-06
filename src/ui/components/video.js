@@ -1,16 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
-import Page from './Page'
 
 /******************************************************************************/
-// Main
+// Main Component
 /******************************************************************************/
 
-const VaultPage = () =>
-  <Page title='vault' />
+const Video = ({ children, ...props }) =>
+  <div {...props}>
+    {children}
+  </div>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default VaultPage
+export default Video

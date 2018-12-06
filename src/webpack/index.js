@@ -27,19 +27,27 @@ let getServerProps
 if (DEV)
   getServerProps = async () => {
 
-    const { default: Client } = await import('@benzed/dev/lib/test-util/test-client')
+    const { ClientStateTree } = await import('@benzed/react')
     const { port } = await import('../../config/default.json')
 
-    const client = new Client({
-      port,
+    const client = new ClientStateTree({
+      hosts: `http://localhost:${port}`,
       provider: 'rest'
     })
+
+    await client.connect()
+
+    const [ $$feathers ] = Object
+      .getOwnPropertySymbols(client)
+      .filter(sym => sym.toString().includes('feathers'))
+
+    const feathers = client[$$feathers]
 
     // In production, we wont need a feathers side client because all this
     // information will be serialized in the request.
 
-    const playlists = await client.service('playlists').find({})
-    const videos = await client.service('videos').find({})
+    const playlists = await feathers.service('playlists').find({})
+    const videos = await feathers.service('videos').find({})
 
     return { playlists, videos }
   }

@@ -42,11 +42,11 @@ const Container = styled.div`
 
 `::Visible.observe(true)
 
-const Links = styled.div.attrs({
-  children: props => props
+const Links = styled.div.attrs(props => ({
+  children: props
     .to
     .map(link => <NavLink key={link} to={`/${link}`}>{link}</NavLink>)
-})`
+}))`
 
   display: flex;
   flex-direction: row;
@@ -101,8 +101,8 @@ const Navigation = ({ children, location, ...props }) => {
 
       <Links to={[
         'about',
-        'videos',
-        'vault'
+        'hq',
+        'shorts'
       ]}/>
 
       <Boss/><Media/>

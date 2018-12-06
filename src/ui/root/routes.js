@@ -1,24 +1,37 @@
 import React from 'react'
 import { withRouter, matchPath } from 'react-router-dom'
 
-import { Home, About, Vault, Videos } from '../pages'
+import { Home, About, Playlist } from '../pages'
 
 import { Visible } from '@benzed/react'
+import { copy } from '@benzed/immutable'
+
+/******************************************************************************/
+// Helper
+/******************************************************************************/
+
+function toPath () {
+  const title = this
+
+  const path = `/${title.toLowerCase().replace(/\s/g, '-')}/:videoNameOrId?`
+  return path
+}
 
 /******************************************************************************/
 // Data
 /******************************************************************************/
 
 const VisibleRoute = withRouter(({
-  location, match, history,
+  location, history,
   exact, delay, path, strict,
-  component: Component
+  component: Component,
+  ...rest
 }) => {
 
-  const matches = !!matchPath(location.pathname, { exact, path, strict })
+  const match = matchPath(location.pathname, { exact, path, strict })::copy()
 
-  return <Visible visible={matches} delay={delay}>
-    <Component location={location} match={match} history={history} />
+  return <Visible visible={!!match} delay={delay}>
+    <Component location={location} history={history} {...rest} match={match}/>
   </Visible>
 })
 
@@ -26,11 +39,32 @@ const VisibleRoute = withRouter(({
 // Main
 /******************************************************************************/
 
-const Routes = () => [
-  <VisibleRoute key='home' path='/' exact delay={400} component={Home} />,
-  <VisibleRoute key='about' path='/about' delay={400} component={About} />,
-  <VisibleRoute key='videos' path='/videos' delay={400} component={Videos} />,
-  <VisibleRoute key='vault' path='/vault' delay={400} component={Vault} />
+const Routes = ({ playlists }) => [
+  <VisibleRoute
+    key='home'
+    path='/'
+    exact
+    delay={400}
+    component={Home}
+  />,
+
+  <VisibleRoute
+    key='about'
+    path='/about'
+    delay={400}
+    component={About}
+  />,
+
+  ...playlists.map(playlist =>
+    <VisibleRoute
+      key={playlist.id}
+      path={playlist.title::toPath()}
+      delay={400}
+      component={Playlist}
+
+      playlist={playlist}
+    />
+  )
 ]
 
 /******************************************************************************/

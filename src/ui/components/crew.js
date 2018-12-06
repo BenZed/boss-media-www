@@ -1,16 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
-import Page from './Page'
 
 /******************************************************************************/
-// Main
+// Main Component
 /******************************************************************************/
 
-const VideosPage = () =>
-  <Page title='videos' />
+const CrewMember = ({ children, ...props }) =>
+  <div {...props}>
+    {children}
+  </div>
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default VideosPage
+export default CrewMember

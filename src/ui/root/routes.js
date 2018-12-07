@@ -6,6 +6,8 @@ import { Home, About, Playlist } from '../pages'
 import { Visible } from '@benzed/react'
 import { copy } from '@benzed/immutable'
 
+import { dashify } from '../util'
+
 /******************************************************************************/
 // Helper
 /******************************************************************************/
@@ -13,7 +15,7 @@ import { copy } from '@benzed/immutable'
 function toPath () {
   const title = this
 
-  const path = `/${title.toLowerCase().replace(/\s/g, '-')}/:videoNameOrId?`
+  const path = `/${title::dashify()}/:videoNameOrId?`
   return path
 }
 
@@ -28,7 +30,10 @@ const VisibleRoute = withRouter(({
   ...rest
 }) => {
 
-  const match = matchPath(location.pathname, { exact, path, strict })::copy()
+  const match = matchPath(
+    location.pathname,
+    { exact, path, strict }
+  )::copy()
 
   return <Visible visible={!!match} delay={delay}>
     <Component location={location} history={history} {...rest} match={match}/>

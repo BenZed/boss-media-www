@@ -7,7 +7,6 @@ import { GlobalStyle } from '@benzed/react'
 import { pluck, first } from '@benzed/array'
 import { copy } from '@benzed/immutable'
 
-
 import { theme } from '../theme'
 
 import is from 'is-explicit'
@@ -16,10 +15,17 @@ import is from 'is-explicit'
 // Helper
 /******************************************************************************/
 
+const fix = title => title
+  .replace(/^boss\shq\s-?/i, '')
+  .trim()
+
 const sort = props => {
 
   const playlists = props.playlists::copy()
   const videos = props.videos::copy()
+
+  for (const video of videos)
+    video.title = fix(video.title)
 
   for (const playlist of playlists)
     playlist.videos = playlist

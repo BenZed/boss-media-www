@@ -5,16 +5,15 @@ import Page from './Page'
 import { Video } from '../components'
 
 import { first } from '@benzed/array'
-import { Scroll } from '@benzed/react'
-
+import { Flex, Modal, Visible, Fade, Slide } from '@benzed/react'
 
 import { Link } from 'react-router-dom'
+
+import { dashify } from '../util'
 
 /******************************************************************************/
 // Helper
 /******************************************************************************/
-
-const toUrl = str => str && str.toLowerCase().replace(/\s/g, '-').replace(/-+/g, '-')
 
 function findVideo (nameOrId) {
 
@@ -22,7 +21,7 @@ function findVideo (nameOrId) {
   const { videos } = playlist
 
   const video = nameOrId && videos
-    .filter(v => v.id === nameOrId || toUrl(v.title) === nameOrId)
+    .filter(v => v.id === nameOrId || dashify(v.title) === nameOrId)
     ::first()
 
   return video || null
@@ -33,36 +32,49 @@ function findVideo (nameOrId) {
 // Main
 /******************************************************************************/
 
-const PlaylistPage = ({ playlist, match, location, ...props }) => {
+const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
 
   const { videoNameOrId = null } = match?.params || {}
 
   const video = playlist::findVideo(videoNameOrId)
 
-  const base = videoNameOrId
-    ? match.url.replace(videoNameOrId, '')
-    : match?.url + '/'
-
-  console.log(video)
+  const base = dashify(playlist.title)
 
   return <Page title={playlist.title} >
-    {video
-      ? <React.Fragment>
-        <h2>{video.title}</h2>
-        <p>{video.description}</p>
-        <img src={video.thumbnails.standard.url} />
-        <br/>
-      </React.Fragment>
-      : null
-    }
-    {match && playlist?.videos.map(video =>
-      <React.Fragment key={video.id}>
-        <Link to={`${base}${toUrl(video.title)}`}>
-          <img src={video.thumbnails.default.url} />
-        </Link>
-        <br/>
-      </React.Fragment>
-    )}
+    { match
+      ? <Modal
+        visible={!!video}
+        position='fixed'
+        onClick={video
+          ? e => {
+            e.stopPropagation()
+            history.push(`/${base}`)
+          } : null
+        }>
+        <Slide from='top'>
+          <Flex.Column>
+            <h2>{video?.title}</h2>
+            <p>{video?.description}</p>
+            {
+              video
+                ? <img src={video.thumbnails.standard.url} />
+                : null
+            }
+            <br/>
+          </Flex.Column>
+        </Slide>
+      </Modal>
+      : null}
+    <Flex.Row wrapped>
+      {match && playlist?.videos.map(video =>
+        <React.Fragment key={video.id}>
+          <Link to={`/${base}/${dashify(video.title)}`}>
+            <img src={video.thumbnails.medium.url} />
+          </Link>
+          <br/>
+        </React.Fragment>
+      )}
+    </Flex.Row>
   </Page>
 }
 

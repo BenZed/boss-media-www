@@ -27,7 +27,6 @@ let getServerProps
 if (DEV)
   getServerProps = async () => {
 
-<<<<<<< HEAD
     const { ClientStateTree } = await import('@benzed/react')
     const { port } = await import('../../config/default.json')
 
@@ -49,21 +48,6 @@ if (DEV)
 
     const playlists = await feathers.service('playlists').find({})
     const videos = await feathers.service('videos').find({})
-=======
-    const { default: Client } = await import('@benzed/dev/lib/test-util/test-client')
-    const { port } = await import('../../config/default.json')
-
-    const client = new Client({
-      port,
-      provider: 'rest'
-    })
-
-    // In production, we wont need a feathers side client because all this
-    // information will be serialized in the request.
-
-    const playlists = await client.service('playlists').find({})
-    const videos = await client.service('videos').find({})
->>>>>>> origin/youtube-api
 
     return { playlists, videos }
   }

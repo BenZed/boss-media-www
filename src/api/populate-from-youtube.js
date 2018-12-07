@@ -12,6 +12,7 @@ const MAX_RESULTS = 50
 /******************************************************************************/
 
 class YoutubeApi {
+
   constructor (config) {
     this.apiKey = config.api_key
     this.userName = config.user_name

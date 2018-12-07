@@ -28,6 +28,17 @@ function findVideo (nameOrId) {
 
 }
 
+function navigateTo (base) {
+
+  const history = this
+
+  return e => {
+    e.stopPropagation()
+    history.push(`/${base}`)
+  }
+
+}
+
 /******************************************************************************/
 // Main
 /******************************************************************************/
@@ -39,32 +50,22 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
   const video = playlist::findVideo(videoNameOrId)
 
   const base = dashify(playlist.title)
+  const goBack = video
+    ? history::navigateTo(base)
+    : null
 
   return <Page title={playlist.title} >
     { match
       ? <Modal
         visible={!!video}
         position='fixed'
-        onClick={video
-          ? e => {
-            e.stopPropagation()
-            history.push(`/${base}`)
-          } : null
-        }>
+        onClick={goBack}>
         <Slide from='top'>
-          <Flex.Column>
-            <h2>{video?.title}</h2>
-            <p>{video?.description}</p>
-            {
-              video
-                ? <img src={video.thumbnails.standard.url} />
-                : null
-            }
-            <br/>
-          </Flex.Column>
+          <Video video={video} />
         </Slide>
       </Modal>
       : null}
+
     <Flex.Row wrapped>
       {match && playlist?.videos.map(video =>
         <React.Fragment key={video.id}>
@@ -75,6 +76,7 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
         </React.Fragment>
       )}
     </Flex.Row>
+
   </Page>
 }
 

@@ -8,7 +8,7 @@ const theme = {
   ...themes.basic,
   primary: Color('darkorange'),
   fonts: {
-    title: 'Arial Black',
+    title: '"Arial Black", Helvetica',
     body: 'Helvetica'
   }
 }

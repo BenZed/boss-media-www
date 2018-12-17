@@ -7,12 +7,9 @@ import { withRouter, matchPath } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 import { $ } from '../theme'
+import is from 'is-explicit'
 
-/******************************************************************************/
-// Data
-/******************************************************************************/
-
-const TIME = 500 // ms
+import { TIME, NAV_MARGIN } from '../constants'
 
 /******************************************************************************/
 //
@@ -30,13 +27,23 @@ const Title = styled.h1`
 `
 
 const Container = styled.div`
-  flex-basis: ${$.prop('visibility').mut(v => v === 'shown' ? '50%' : '0%')};
+  right: 0;
+  left: ${$.prop('visibility').mut(v =>
+  v === 'shown'
+    ? '50%'
+    : `calc(100vw - ${NAV_MARGIN}em)`)
+  };
+  bottom: 0;
+  top: 0;
 
-  background-color: ${$.theme.primary.mut(v => String(v))};
-  margin-left: auto;
+  background-color: ${$.theme.primary};
 
-  transition: flex-basis ${TIME}ms;
-  position: relative;
+  transition: left ${TIME}ms;
+  position: fixed;
+
+  &.active {
+    opacity: 0.5;
+  }
 
   display: flex;
 
@@ -45,20 +52,27 @@ const Container = styled.div`
 const Links = styled.div.attrs(props => ({
   children: props
     .to
-    .map(link => <NavLink key={link} to={`/${link}`}>{link}</NavLink>)
+    .map(link => <NavLink
+      key={link}
+      exact
+      to={`/${link === 'latest' ? '' : link}`}>
+      {link}
+    </NavLink>)
 }))`
 
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 1em;
+  position: sticky;
+  font-family: monospace;
 
   a {
     text-decoration: none;
     flex-shrink: 1;
     flex-basis: 4em;
+    text-align: center;
   }
-
 `
 
 const Boss = styled(Title).attrs({
@@ -85,7 +99,7 @@ const Media = styled(Title).attrs({
   : 'translate(0vw, -50%)')
   };
 
-  color: ${$.theme.bg.mut(v => v.toString())};
+  color: ${$.theme.bg};
 `::Visible.observe(false)
 
 /******************************************************************************/
@@ -96,17 +110,17 @@ const Navigation = ({ children, location, ...props }) => {
 
   const isAtHome = !!matchPath(location.pathname, { path: '/', exact: true })
 
+  const links = [
+    'about',
+    'hq',
+    'shorts',
+    isAtHome ? null : 'latest'
+  ].filter(is.defined)
+
   return <Visible visible={isAtHome} delay={TIME}>
     <Container>
-
-      <Links to={[
-        'about',
-        'hq',
-        'shorts'
-      ]}/>
-
+      <Links to={links}/>
       <Boss/><Media/>
-
     </Container>
   </Visible>
 }

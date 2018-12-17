@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { Slide, Fade } from '@benzed/react'
 
+import { NAV_MARGIN } from '../constants'
 /******************************************************************************/
 //
 /******************************************************************************/
@@ -11,15 +12,16 @@ const Title = styled.div`
   display: flex;
   width: 100%;
   font-size: 2em;
+  position: sticky;
+  top: 0.25em;
 `
 
 const Layout = styled.div`
   position: absolute;
-  overflow-y: auto;
   top: 0.5em;
   left: 0.5em;
   bottom: 0.5em;
-  right: 5em;
+  right: ${NAV_MARGIN}em;
 `
 
 /******************************************************************************/

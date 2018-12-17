@@ -31,7 +31,10 @@ if (DEV)
     const { port } = await import('../../config/default.json')
 
     const client = new ClientStateTree({
-      hosts: `http://localhost:${port}`,
+      hosts: [
+        `http://192.168.0.10:${port}`,
+        `http://localhost:${port}`
+      ],
       provider: 'rest'
     })
 

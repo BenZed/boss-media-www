@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { $16x9 } from '../util'
 
 /******************************************************************************/
 // Helper
@@ -18,28 +19,43 @@ const Player = styled(({ videoId, width, height, className }) =>
     `&rel=0` +
     `&cc_load_policy=0` +
     `&start=0` +
-    `&end=0`
-}/>)`
+    `&end=0`}/>)`
 
-  width: ${props => props.size * 16}vw;
-  height: ${props => props.size * 9}vw;
+  ${props => $16x9(props.size, props.units)}
+
+  margin: 0.25em;
 
 `
+
 Player.defaultProps = {
-  size: 5
+  size: 1,
+  units: 'em'
 }
+
+/******************************************************************************/
+// Styles
+/******************************************************************************/
+
+const Description = styled.div`
+  margin: 1em 0em 2em 0em;
+`
 
 /******************************************************************************/
 // Main Component
 /******************************************************************************/
 
-const Video = ({ children, video, ...props }) =>
-  <div {...props}>
+const Video = ({ children, video, size, units }) =>
+  <>
     { video
-      ? <Player videoId={video.id}/>
+      ? <Player videoId={video.id} size={size} units={units}/>
       : null
     }
-  </div>
+    { video
+      ? <Description >{video.description}</Description>
+      : null
+    }
+    {children}
+  </>
 
 /******************************************************************************/
 // Exports

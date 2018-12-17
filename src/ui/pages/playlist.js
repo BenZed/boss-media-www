@@ -5,11 +5,12 @@ import Page from './Page'
 import { Video } from '../components'
 
 import { first } from '@benzed/array'
-import { Flex, Modal, Visible, Fade, Slide } from '@benzed/react'
+import { Flex, Modal, Slide, Fade, isMobile, Visible } from '@benzed/react'
 
 import { Link } from 'react-router-dom'
 
-import { dashify } from '../util'
+import { dashify, media, $16x9 } from '../util'
+import $ from '../theme'
 
 /******************************************************************************/
 // Helper
@@ -25,7 +26,6 @@ function findVideo (nameOrId) {
     ::first()
 
   return video || null
-
 }
 
 function navigateTo (base) {
@@ -38,6 +38,52 @@ function navigateTo (base) {
   }
 
 }
+
+/******************************************************************************/
+// Move Me, this component will be reused TODO
+/******************************************************************************/
+
+const Title = styled.h4`
+
+  background-color: ${$.theme.bg.fade(0.5)};
+  padding: 0.4em;
+
+  ${media.tablet.css`
+    font-size: 85%;
+  `}
+
+  ${media.phone.css`
+    font-size: 75%;
+  `}
+
+`
+
+const VideoLink = styled(({ prefix, video, ...rest }) =>
+
+  <Flex.Column items='center' {...rest}>
+
+    <Link
+      to={`/${prefix}/${dashify(video.title)}`}
+      style={{
+        backgroundImage: `url(${video.thumbnails.medium.url})`
+      }}
+    >
+      <Title >{video.title}</Title>
+    </Link>
+
+  </Flex.Column>
+
+)`
+  margin: 0.25em;
+
+  > a {
+    ${$16x9(1.25)}
+    text-decoration: none;
+    background-size: cover;
+    background-position: center;
+  }
+
+`
 
 /******************************************************************************/
 // Main
@@ -55,27 +101,41 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
     : null
 
   return <Page title={playlist.title} >
-    { match
-      ? <Modal
-        visible={!!video}
-        position='fixed'
-        onClick={goBack}>
-        <Slide from='top'>
-          <Video video={video} />
-        </Slide>
-      </Modal>
-      : null}
+    { !isMobile()
+      ? <Visible visible={!!video}>
 
-    <Flex.Row wrapped>
-      {match && playlist?.videos.map(video =>
-        <React.Fragment key={video.id}>
-          <Link to={`/${base}/${dashify(video.title)}`}>
-            <img src={video.thumbnails.medium.url} />
-          </Link>
-          <br/>
-        </React.Fragment>
+        <Modal
+          visible={!!video}
+          position='fixed'
+          onClick={goBack}>
+
+          <Fade>
+            <Video video={video} size={2.25}/>
+          </Fade>
+
+        </Modal>
+
+      </Visible>
+      : null
+    }
+
+    <Flex.Column items='center'>
+      {match && playlist?.videos.map(v =>
+        isMobile() && video && v.id === video.id
+          ? <Video
+            key={v.id}
+            size={1.25}
+            units='em'
+            video={v}
+          />
+
+          : <VideoLink
+            key={v.id}
+            prefix={base}
+            video={v}
+          />
       )}
-    </Flex.Row>
+    </Flex.Column>
 
   </Page>
 }

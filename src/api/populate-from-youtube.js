@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import is from 'is-explicit'
 
 /******************************************************************************/
 // Helper
@@ -54,17 +55,80 @@ class YoutubeApi {
       title: item.snippet.title,
       description: item.snippet.description,
       thumbnails: item.snippet.thumbnails,
-      videos: await this.getVideos(item.id, true)
+      videos: await this.getPlaylistItemsIds(item.id)
     })
 
     return playlists
   }
 
-  async getVideos (playlistId, justId = false, pageToken = null) {
+  async getVideos (playlistId, pageToken = null) {
+
+    const videoIds = await this.getPlaylistItemsIds(playlistId)
+
+    const res = await fetch(
+      `${YTAPIURL}videos` +
+      `?part=snippet` +
+      `&id=${videoIds}` +
+      `&maxResults=${MAX_RESULTS}` +
+      `&key=${this.apiKey}`
+    )
+
+    const json = await res.json()
+
+    const videos = (json.items || []).map(item => ({
+
+      id: item.id,
+      title: item.snippet?.title,
+      description: item.snippet?.description,
+      thumbnails: item.snippet?.thumbnails,
+      position: item.snippet?.position,
+      published: new Date(item.snippet?.publishedAt),
+      meta: this.parseTags(item.snippet?.tags)
+
+    }))
+
+    return videos
+
+  }
+
+  parseTags (tags = []) {
+
+    const tagreg = /^\([A-Za-z0-9]+\)/
+
+    const metaData = tags.reduce((meta, tag) => {
+
+      const match = tag.match(tagreg)
+      if (match) {
+
+        const value = tag.replace(tagreg, '').trim()
+        const key = match[0]
+          // remove brackets
+          .replace(/\(|\)/g, '')
+
+          // really expensive way to make sure the first character is lower case
+          .split('')
+          .map((char, i) => i === 0 ? char.toLowerCase() : char)
+          .join('')
+
+        meta[key] = meta[key] || []
+        meta[key].push(value)
+      }
+
+      return meta
+
+    }, {})
+
+    return Object.keys(metaData).length > 0
+      ? metaData
+      : null
+
+  }
+
+  async getPlaylistItemsIds (playlistId, pageToken = null) {
 
     const res = await fetch(
       `${YTAPIURL}playlistItems` +
-      `?part=${justId ? 'contentDetails' : 'snippet'}` +
+      `?part=contentDetails` +
       `&playlistId=${playlistId}` +
       `&maxResults=${MAX_RESULTS}` +
       (pageToken ? `&pageToken=${pageToken}` : '') +
@@ -73,23 +137,10 @@ class YoutubeApi {
 
     const json = await res.json()
 
-    const videos = (json.items || []).map(item =>
-
-      justId
-        ? item.contentDetails?.videoId
-
-        : {
-          id: item.snippet?.resourceId?.videoId,
-          title: item.snippet?.title,
-          description: item.snippet?.description,
-          thumbnails: item.snippet?.thumbnails,
-          position: item.snippet?.position,
-          published: new Date(item.snippet?.publishedAt)
-        }
-    )
+    const videos = (json.items || []).map(item => item.contentDetails?.videoId)
 
     if (json.nextPageToken)
-      videos.push(...(await this.getVideos(playlistId, justId, json.nextPageToken)))
+      videos.push(...(await this.getPlaylistItemsIds(playlistId, json.nextPageToken)))
 
     return videos
   }
@@ -108,16 +159,24 @@ const PopulateFromYoutube = props => {
 
   return async app => {
 
-    const [ channelId, uploadPlaylistId ] = await api.getChannelAndUploads()
+    try {
 
-    const videos = await api.getVideos(uploadPlaylistId)
-    await app.service('videos').create(videos)
+      const [ channelId, uploadPlaylistId ] = await api.getChannelAndUploads()
 
-    const playlists = await api.getPlaylists(channelId)
-    await app.service('playlists').create(playlists)
+      const videos = await api.getVideos(uploadPlaylistId)
 
-    app.log`${videos.length} videos fetched from youtube`
-    app.log`${playlists.length} playlists fetched from youtube`
+      await app.service('videos').create(videos)
+
+      const playlists = await api.getPlaylists(channelId)
+      await app.service('playlists').create(playlists)
+
+      app.log`${videos.length} videos fetched from youtube`
+      app.log`${playlists.length} playlists fetched from youtube`
+
+    } catch (err) {
+
+      app.log`information could not be fetched from youtube: ${err.message}`
+    }
 
   }
 }

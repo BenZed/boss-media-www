@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Navigation from './navigation'
 import Routes from './routes'
+
 import { GlobalStyle } from '@benzed/react'
 import { pluck, first } from '@benzed/array'
 import { copy } from '@benzed/immutable'
@@ -19,13 +20,29 @@ const fix = title => title
   .replace(/^boss\shq\s-?/i, '')
   .trim()
 
-const sort = props => {
+const sanitizeVideos = videos => {
 
-  const playlists = props.playlists::copy()
-  const videos = props.videos::copy()
+  const sanitized = []
 
   for (const video of videos)
+    sanitized.push(video::copy(video => {
+      video.title = fix(video.title)
+      video.published = new Date(video.published)
+    }))
+
+  return sanitized
+}
+
+const sanitizePlaylists = playlists => playlists::copy()
+
+const sortPlaylists = (videos, playlists) => {
+
+  playlists = playlists::copy()
+
+  for (const video of videos) {
     video.title = fix(video.title)
+    video.published = new Date(video.published)
+  }
 
   for (const playlist of playlists)
     playlist.videos = playlist
@@ -47,6 +64,14 @@ const sort = props => {
   return playlists
 }
 
+const getLatestVideo = videos => videos
+  .reduce(
+    (a, b) =>
+      a.published > b.published
+        ? a
+        : b
+  )
+
 /******************************************************************************/
 // Styles
 /******************************************************************************/
@@ -54,21 +79,28 @@ const sort = props => {
 const WebsiteLayout = styled.div`
   display: flex;
   flex-grow: 1;
-  flex-direction: row;
+  flex-direction: column;
+  background-image: url(${props => props.image});
+  background-position: left center;
+  background-size: cover;
 `
 
 /******************************************************************************/
 // Main
 /******************************************************************************/
 
-const Website = props => {
+const Website = ({ videos, playlists, black, orange, ...props }) => {
 
-  const playlists = sort(props)
+  const sanitizedVideos = sanitizeVideos(videos)
+  const sanitizedPlaylists = sanitizePlaylists(playlists)
+
+  const sortedPlaylists = sortPlaylists(sanitizedVideos, sanitizedPlaylists)
+  const latestVideo = getLatestVideo(sanitizedVideos)
 
   return <GlobalStyle theme={theme}>
-    <WebsiteLayout>
-      <Routes playlists={playlists} />
-      <Navigation />
+    <WebsiteLayout image={black}>
+      <Routes playlists={sortedPlaylists} latestVideo={latestVideo}/>
+      <Navigation image={orange} />
     </WebsiteLayout>
   </GlobalStyle>
 }

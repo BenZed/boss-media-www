@@ -9,7 +9,9 @@ const dependencies = Promise.all([
   import('react'),
   import('react-dom'),
   import('react-router-dom'),
-  import('../ui')
+  import('../ui'),
+  import('./bg-black.jpg'),
+  import('./bg-orange.jpg')
 ])
 
 /******************************************************************************/
@@ -32,6 +34,7 @@ if (DEV)
 
     const client = new ClientStateTree({
       hosts: [
+        `http://174.7.245.241:${port}`,
         `http://192.168.0.10:${port}`,
         `http://localhost:${port}`
       ],
@@ -86,14 +89,16 @@ window.addEventListener('load', async () => {
     { default: React },
     { hydrate },
     { BrowserRouter },
-    { Website }
+    { Website },
+    { default: black },
+    { default: orange }
   ] = await dependencies
 
   const props = await getServerProps()
   const main = getMainTag()
 
   const element = <BrowserRouter>
-    <Website {...props} />
+    <Website orange={orange} black={black} {...props} />
   </BrowserRouter>
 
   hydrate(element, main)

@@ -6,7 +6,7 @@ import { themes, Color, Styler } from '@benzed/react'
 
 const theme = {
   ...themes.basic,
-  primary: Color('darkorange'),
+  primary: Color('#e05a15'),
   fonts: {
     title: '"Arial Black", Helvetica',
     body: 'Helvetica'

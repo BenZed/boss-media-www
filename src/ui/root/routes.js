@@ -44,13 +44,14 @@ const VisibleRoute = withRouter(({
 // Main
 /******************************************************************************/
 
-const Routes = ({ playlists }) => [
+const Routes = ({ playlists, latestVideo }) => [
   <VisibleRoute
     key='home'
     path='/'
     exact
     delay={400}
     component={Home}
+    latestVideo={latestVideo}
   />,
 
   <VisibleRoute

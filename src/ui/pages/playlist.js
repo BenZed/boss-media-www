@@ -5,7 +5,7 @@ import Page from './Page'
 import { Video } from '../components'
 
 import { first } from '@benzed/array'
-import { Flex, Modal, Slide, Fade, isMobile, Visible } from '@benzed/react'
+import { Flex, Modal, Slide, isMobile, Visible } from '@benzed/react'
 
 import { Link } from 'react-router-dom'
 
@@ -56,33 +56,56 @@ const Title = styled.h4`
     font-size: 75%;
   `}
 
+  transform: translate(0, ${props => props.shown ? 0 : -2}em);
+  transition: transform 250ms;
+
 `
 
-const VideoLink = styled(({ prefix, video, ...rest }) =>
+const NoOverflowLink = styled(Link)`
+  overflow: hidden;
+`
+
+const VideoLink = styled(({ prefix, video, size, playable, ...rest }) =>
 
   <Flex.Column items='center' {...rest}>
 
-    <Link
+    <NoOverflowLink
       to={`/${prefix}/${dashify(video.title)}`}
       style={{
-        backgroundImage: `url(${video.thumbnails.medium.url})`
+        backgroundImage: `url(${video.thumbnails.maxres.url})`
       }}
     >
-      <Title >{video.title}</Title>
-    </Link>
+      <Title shown={!playable}>{video.title}</Title>
+    </NoOverflowLink>
+
+    <Visible visible={playable}>
+      <Video video={playable ? video : null} size={size} autoplay/>
+    </Visible>
 
   </Flex.Column>
 
 )`
-  margin: 0.25em;
+  margin: 0.5em;
+  position: relative;
 
   > a {
-    ${$16x9(1.25)}
+    ${props => $16x9(props.size, props.units)}
     text-decoration: none;
     background-size: cover;
     background-position: center;
   }
 
+`
+
+const Playlist = styled.div`
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  margin: calc(10vw + 0.5em) 4em 1em 4em;
 `
 
 /******************************************************************************/
@@ -100,6 +123,8 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
     ? history::navigateTo(base)
     : null
 
+  const size = playlist?.videos.length > 10 ? 1.25 : 2
+
   return <Page title={playlist.title} >
     { !isMobile()
       ? <Visible visible={!!video}>
@@ -107,11 +132,12 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
         <Modal
           visible={!!video}
           position='fixed'
+          opacity={0.75}
           onClick={goBack}>
 
-          <Fade>
+          <Slide from='0em 15em' to='0em -15em'>
             <Video video={video} size={2.25}/>
-          </Fade>
+          </Slide>
 
         </Modal>
 
@@ -119,23 +145,17 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
       : null
     }
 
-    <Flex.Column items='center'>
+    <Playlist>
       {match && playlist?.videos.map(v =>
-        isMobile() && video && v.id === video.id
-          ? <Video
-            key={v.id}
-            size={1.25}
-            units='em'
-            video={v}
-          />
-
-          : <VideoLink
-            key={v.id}
-            prefix={base}
-            video={v}
-          />
+        <VideoLink
+          key={v.id}
+          prefix={base}
+          video={v}
+          size={size}
+          playable={isMobile() && v.id === video?.id}
+        />
       )}
-    </Flex.Column>
+    </Playlist>
 
   </Page>
 }

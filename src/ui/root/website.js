@@ -81,7 +81,7 @@ const WebsiteLayout = styled.div`
   flex-grow: 1;
   flex-direction: column;
   background-image: url(${props => props.image});
-  background-position: left center;
+  background-position: center center;
   background-size: cover;
 `
 
@@ -98,10 +98,14 @@ const Website = ({ videos, playlists, black, orange, ...props }) => {
   const latestVideo = getLatestVideo(sanitizedVideos)
 
   return <GlobalStyle theme={theme}>
+
     <WebsiteLayout image={black}>
-      <Routes playlists={sortedPlaylists} latestVideo={latestVideo}/>
-      <Navigation image={orange} />
+
+      <Routes playlists={sortedPlaylists} />
+      <Navigation image={orange} latestVideo={latestVideo}/>
+
     </WebsiteLayout>
+
   </GlobalStyle>
 }
 

@@ -6,7 +6,7 @@ import { Home, About, Playlist } from '../pages'
 import { Visible } from '@benzed/react'
 import { copy } from '@benzed/immutable'
 
-import { dashify } from '../util'
+import { urlify } from '../util'
 
 /******************************************************************************/
 // Helper
@@ -15,7 +15,7 @@ import { dashify } from '../util'
 function toPath () {
   const title = this
 
-  const path = `/${title::dashify()}/:videoNameOrId?`
+  const path = `/${title::urlify()}/:videoNameOrId?`
   return path
 }
 

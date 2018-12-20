@@ -9,7 +9,7 @@ import { Flex, Modal, Slide, isMobile, Visible } from '@benzed/react'
 
 import { Link } from 'react-router-dom'
 
-import { dashify, media, $16x9 } from '../util'
+import { urlify, media, $16x9 } from '../util'
 import $ from '../theme'
 
 /******************************************************************************/
@@ -22,7 +22,7 @@ function findVideo (nameOrId) {
   const { videos } = playlist
 
   const video = nameOrId && videos
-    .filter(v => v.id === nameOrId || dashify(v.title) === nameOrId)
+    .filter(v => v.id === nameOrId || urlify(v.title) === nameOrId)
     ::first()
 
   return video || null
@@ -70,7 +70,7 @@ const VideoLink = styled(({ prefix, video, size, playable, ...rest }) =>
   <Flex.Column items='center' {...rest}>
 
     <NoOverflowLink
-      to={`/${prefix}/${dashify(video.title)}`}
+      to={`/${prefix}/${urlify(video.title)}`}
       style={{
         backgroundImage: `url(${video.thumbnails.maxres.url})`
       }}
@@ -105,7 +105,7 @@ const Playlist = styled.div`
   flex-grow: 1;
   justify-content: center;
   align-items: center;
-  margin: calc(10vw + 0.5em) 4em 1em 4em;
+  margin: calc(8vw + 1.5em) 1em 1em 1em;
 `
 
 /******************************************************************************/
@@ -118,15 +118,17 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
 
   const video = playlist::findVideo(videoNameOrId)
 
-  const base = dashify(playlist.title)
+  const base = urlify(playlist.title)
   const goBack = video
     ? history::navigateTo(base)
     : null
 
-  const size = playlist?.videos.length > 10 ? 1.25 : 2
+  const many = playlist?.videos.length > 10
+  const size = many ? 1.25 : 2
+  const showModal = many && !isMobile()
 
   return <Page title={playlist.title} >
-    { !isMobile()
+    { showModal
       ? <Visible visible={!!video}>
 
         <Modal
@@ -152,7 +154,7 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
           prefix={base}
           video={v}
           size={size}
-          playable={isMobile() && v.id === video?.id}
+          playable={!showModal && v.id === video?.id}
         />
       )}
     </Playlist>

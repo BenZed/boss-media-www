@@ -4,9 +4,11 @@ import { css } from 'styled-components'
 // DATA
 /******************************************************************************/
 
-const PHONE = 400
+const MINI = 500
 
-const TABLET = 720
+const PHONE = 600
+
+const TABLET = 800
 
 const DESKTOP = 960
 
@@ -32,6 +34,7 @@ media.add = (name, size) => {
   return media[name]
 }
 
+media.add('mini', MINI)
 media.add('phone', PHONE)
 media.add('tablet', TABLET)
 media.add('desktop', DESKTOP)

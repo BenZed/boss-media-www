@@ -1,27 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Visible } from '@benzed/react'
-import { adjacent, last, first } from '@benzed/array'
+import { Visible, Slide, Write } from '@benzed/react'
 
 import { withRouter, matchPath } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 import { $ } from '../theme'
 import is from 'is-explicit'
+
 import { media } from '../util'
 
-import { TIME } from '../constants'
-
-/******************************************************************************/
-// Data
-/******************************************************************************/
-
-const STAGES = [
-  'page-load', 'transition-in', 'prepare', 'rest', 'transition-out'
-]
-
-const TRANSITSION_TIME = 500 // ms
+import { Video } from '../components'
 
 /******************************************************************************/
 // Helper
@@ -29,6 +19,51 @@ const TRANSITSION_TIME = 500 // ms
 
 const getPage = location =>
   matchPath(location.pathname, { path: '/:page?' }).params.page || 'home'
+
+const polygonFromPage = ({ page }) => {
+
+  let polygon = `calc(100% - 10em) 0%,` +
+  ` 100% 0%,` +
+  ` 100% 0%,` +
+  ` 100% 10em`
+
+  if (page === 'about')
+    polygon = `calc(100% - 6.5em) 0%, 100% 0%, 100% 100%, calc(100% - 6.5em) 100%`
+
+  if (page === 'home')
+    polygon = `50% 0%, 100% 0%, 100% 100%, 50% 100%`
+
+  return polygon
+}
+
+const titleLeftFromPage = ({ page }) => {
+
+  let left = '20.5vw'
+
+  if (page !== 'home')
+    left = '1em'
+
+  return left
+}
+
+const fontSizeFromPage = (scale = 1) => ({ page }) => {
+
+  let fontSize = `${10 * scale}vw`
+
+  if (page !== 'home')
+    fontSize = `${6 * scale}vw`
+
+  return fontSize
+
+}
+
+const bottomFromPage = ({ page }) => {
+  let bottom = `calc(100% - 6vw - 2.5em)`
+  if (page === 'home')
+    bottom = '100%'
+
+  return bottom
+}
 
 /******************************************************************************/
 // Styles
@@ -40,26 +75,26 @@ const Header = styled.h1`
   letter-spacing: -0.07em;
   display: inline;
 
-  transition: transform ${TIME}ms;
+  transition: transform 250ms, font-size 250ms;
 
   color: ${$.ifProp('bg').theme.bg.else.theme.fg};
 `
 
-const Container = styled.div`
-  right: 0%;
-  left: 50%;
-  bottom: 0%;
-  top: 0%;
+const OrangeCover = styled.div`
+
+  width: 100%;
+  height: 100%;
 
   background-color: ${$.theme.primary};
   background-image: url(${$.prop('image')});
   background-size: cover;
-  background-position: right center;
+  background-position: center center;
   backface-visibility: hidden;
-  clip: rect(auto, auto, auto, auto);
+  clip-path: polygon(${polygonFromPage});
 
-  transition: left ${TIME}ms;
+  transition: clip-path 250ms;
   position: fixed;
+  pointer-events: none;
 
   overflow: hidden;
 
@@ -85,13 +120,21 @@ const Links = styled.div.attrs(props => ({
   flex-wrap: wrap;
   align-items: flex-end;
 
-  padding: 2em;
+  padding: 1em;
   position: fixed;
   font-family: monospace;
   z-index: 2000;
-  top: 0em;
+  line-height: 1.25em;
+
   right: 0em;
 
+  ${media.mini.css`
+    padding: 0.5em;
+    font-size: 80%;
+    line-height: 1.5em;
+  `}
+
+  transition: padding 250ms;
 
   a {
     text-decoration: none;
@@ -99,10 +142,6 @@ const Links = styled.div.attrs(props => ({
     text-align: center;
     color: ${$.theme.bg};
     font-weight: bold;
-
-    &:not(:last-child) {
-      margin-right: 0.5em;
-    }
 
     &.active {
       opacity: 0.25;
@@ -115,35 +154,79 @@ const Links = styled.div.attrs(props => ({
 
 const Boss = styled(Header).attrs({
   children: 'BOSS'
-})``::Visible.observe(false)
+})``
 
 const Media = styled(Header).attrs({
   children: 'MEDIA'
 })`
   margin-left: 0.2em;
-`::Visible.observe(false)
-
-const Title = styled(({ bg, ...rest }) => <div {...rest}>
-  <Boss bg={bg}/>
-  <Media bg={bg}/>
-</div>)`
-  position: fixed;
-  top: 0em;
-  left: calc(20.5vw);
-  top: 1em;
-  overflow: clip;
 `
 
-const Guide = styled.span`
-  background-color: rgba(0,255,0,0.5);
-  width: 1em;
-  height: 1em;
+const PageName = styled(Header).attrs({
+  children: props => <Write time={50}>{
+    props.page !== 'home'
+      ? props.page.toUpperCase().replace(/-/g, ' ')
+      : ''
+  }</Write>
+})`
+  margin-left: 0.4em;
+  font-size: 8vw;
+  color: ${$.ifProp('bg').theme.bg.else.theme.primary};
+`
 
-  top: calc(50% - 0.5em);
-  left: calc(50% - 0.5em);
-  border-radius: 50%;
+const TitleContainer = styled.div`
   position: fixed;
-  display: ${process.env.NODE_ENV === 'production' ? 'none' : 'initial'};
+  top: 0em;
+  right: 0em;
+  left: 0em;
+  bottom: ${bottomFromPage};
+
+  transition: bottom 250ms;
+
+  background-color: ${$.theme.bg.fade(0.25)};
+`
+
+const Title = styled(({ bg, children, page, ...rest }) =>
+  <div {...rest}>
+    <Boss bg={bg} page={page} />
+    <Media bg={bg} page={page}/>
+    <PageName bg={bg} page={page} />
+  </div>)`
+  position: fixed;
+
+  ${Header} {
+    font-size: ${fontSizeFromPage(1)};
+    &:nth-child(3) {
+      font-size: ${fontSizeFromPage(0.7)};
+    }
+  }
+
+  top: 1em;
+  left: ${titleLeftFromPage};
+
+  transition: left 250ms;
+`
+// const Guide = styled.span`
+//   background-color: rgba(0,255,0,0.5);
+//   width: 1em;
+//   height: 1em;
+//
+//   top: calc(50% - 0.5em);
+//   left: calc(50% - 0.5em);
+//   border-radius: 50%;
+//   position: fixed;
+//   display: ${process.env.NODE_ENV === 'production' ? 'none' : 'initial'};
+// `
+
+const LatestVideo = styled(Video)`
+
+  position: fixed;
+
+  left: 50vw;
+  top: calc(10vw + 2em);
+
+  transform: translate(-50%, 0%);
+
 `
 
 /******************************************************************************/
@@ -152,57 +235,65 @@ const Guide = styled.span`
 
 class Navigation extends React.Component {
 
-  state = {
-    stage: STAGES[0]
-  }
+  // state = {
+  //   stage: STAGES[0]
+  // }
 
-  componentDidMount () {
-    this.advanceStage()
-  }
+  // componentDidMount () {
+  //   this.advanceStage()
+  // }
+  //
+  // advanceStage () {
+  //
+  //   const currentStage = this.state.stage
+  //   const nextStage = STAGES::adjacent(currentStage)
+  //   const time = currentStage === STAGES::first()
+  //     ? TRANSITSION_TIME * 0.5
+  //     : TRANSITSION_TIME
+  //
+  //   if (nextStage !== STAGES::last())
+  //     setTimeout(
+  //       () => this.dom && this.setState({ stage: nextStage }),
+  //       time
+  //     )
+  // }
 
-  advanceStage () {
-
-    const currentStage = this.state.stage
-    const nextStage = STAGES::adjacent(currentStage)
-    const time = currentStage === STAGES::first()
-      ? TRANSITSION_TIME * 0.5
-      : TRANSITSION_TIME
-
-    if (nextStage !== STAGES::last())
-      setTimeout(
-        () => this.dom && this.setState({ stage: nextStage }),
-        time
-      )
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-
-    if (prevState.stage !== this.state.stage)
-      this.advanceStage()
-  }
+  // componentDidUpdate (prevProps, prevState) {
+  //
+  //   if (prevState.stage !== this.state.stage)
+  //     this.advanceStage()
+  // }
 
   getRef = dom => { this.dom = dom }
 
   render () {
 
-    const { location, image } = this.props
+    const { location, image, latestVideo } = this.props
 
     const page = getPage(location)
 
     const links = [
-      'about',
       'hq',
       'shorts',
+      'about',
       'latest'
     ].filter(is.defined)
 
     return <>
       <Links to={links}/>
-      <Title id='title-white'/>
-      <Container image={image}>
-        <Title bg id='title-black'/>
-      </Container>
-      <Guide id='movement-guide'/>
+
+      <TitleContainer page={page} />
+      <Title id='title-white' page={page} />
+
+      <OrangeCover image={image} page={page}>
+        <Title bg id='title-black' page={page} links={links} />
+      </OrangeCover>
+
+      <Visible visible={page === 'home'}>
+        <Slide from='left' to='right'>
+          <LatestVideo video={latestVideo} size={2.25} coverDirection='right'/>
+        </Slide>
+      </Visible>
     </>
   }
 

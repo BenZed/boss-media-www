@@ -1,7 +1,8 @@
 import React from 'react'
 import { withRouter, matchPath } from 'react-router-dom'
+import { Switch } from 'react-router'
 
-import { Home, About, Playlist } from '../pages'
+import { Missing, Home, About, Playlist } from '../pages'
 
 import { Visible } from '@benzed/react'
 import { copy } from '@benzed/immutable'
@@ -44,34 +45,41 @@ const VisibleRoute = withRouter(({
 // Main
 /******************************************************************************/
 
-const Routes = ({ playlists, latestVideo }) => [
-  <VisibleRoute
-    key='home'
-    path='/'
-    exact
-    delay={400}
-    component={Home}
-    latestVideo={latestVideo}
-  />,
+const Routes = ({ playlists, latestVideo }) =>
+  <Switch>
+    <VisibleRoute
+      key='home'
+      path='/'
+      exact
+      delay={400}
+      component={Home}
+      latestVideo={latestVideo}
+    />
 
-  <VisibleRoute
+    {/* TODO add back in
+    <VisibleRoute
     key='about'
     path='/about'
     delay={400}
     component={About}
-  />,
+    /> */}
 
-  ...playlists.map(playlist =>
+    {playlists.map(playlist =>
+      <VisibleRoute
+        key={playlist.id}
+        path={playlist.title::toPath()}
+        delay={400}
+        component={Playlist}
+
+        playlist={playlist}
+      />
+    )}
     <VisibleRoute
-      key={playlist.id}
-      path={playlist.title::toPath()}
+      key='missing'
       delay={400}
-      component={Playlist}
-
-      playlist={playlist}
+      component={Missing}
     />
-  )
-]
+  </Switch>
 
 /******************************************************************************/
 // Exports

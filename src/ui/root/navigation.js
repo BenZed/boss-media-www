@@ -233,70 +233,35 @@ const LatestVideo = styled(Video)`
 // Main Component
 /******************************************************************************/
 
-class Navigation extends React.Component {
+const Navigation = (props) => {
 
-  // state = {
-  //   stage: STAGES[0]
-  // }
+  const { location, image, latestVideo } = props
 
-  // componentDidMount () {
-  //   this.advanceStage()
-  // }
-  //
-  // advanceStage () {
-  //
-  //   const currentStage = this.state.stage
-  //   const nextStage = STAGES::adjacent(currentStage)
-  //   const time = currentStage === STAGES::first()
-  //     ? TRANSITSION_TIME * 0.5
-  //     : TRANSITSION_TIME
-  //
-  //   if (nextStage !== STAGES::last())
-  //     setTimeout(
-  //       () => this.dom && this.setState({ stage: nextStage }),
-  //       time
-  //     )
-  // }
+  const page = getPage(location)
 
-  // componentDidUpdate (prevProps, prevState) {
-  //
-  //   if (prevState.stage !== this.state.stage)
-  //     this.advanceStage()
-  // }
+  const links = [
+    'hq',
+    'shorts',
+    // 'about', TODO add back in
+    'latest'
+  ].filter(is.defined)
 
-  getRef = dom => { this.dom = dom }
+  return <>
+    <Links to={links}/>
 
-  render () {
+    <TitleContainer page={page} />
+    <Title id='title-white' page={page} />
 
-    const { location, image, latestVideo } = this.props
+    <OrangeCover image={image} page={page}>
+      <Title bg id='title-black' page={page} links={links} />
+    </OrangeCover>
 
-    const page = getPage(location)
-
-    const links = [
-      'hq',
-      'shorts',
-      'about',
-      'latest'
-    ].filter(is.defined)
-
-    return <>
-      <Links to={links}/>
-
-      <TitleContainer page={page} />
-      <Title id='title-white' page={page} />
-
-      <OrangeCover image={image} page={page}>
-        <Title bg id='title-black' page={page} links={links} />
-      </OrangeCover>
-
-      <Visible visible={page === 'home'}>
-        <Slide from='left' to='right'>
-          <LatestVideo video={latestVideo} size={2.25} coverDirection='right'/>
-        </Slide>
-      </Visible>
-    </>
-  }
-
+    <Visible visible={page === 'home'}>
+      <Slide from='left' to='right'>
+        <LatestVideo video={latestVideo} size={2.25} coverDirection='right'/>
+      </Slide>
+    </Visible>
+  </>
 }
 
 /******************************************************************************/

@@ -1,11 +1,11 @@
-import PlaylistService from './playlists'
-import VideoService from './videos'
+import playlists from './playlists'
+import videos from './videos'
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
 export {
-  PlaylistService,
-  VideoService
+  playlists,
+  videos
 }

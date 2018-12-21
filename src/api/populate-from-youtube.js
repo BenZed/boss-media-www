@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch'
-import is from 'is-explicit'
 
 /******************************************************************************/
 // Helper

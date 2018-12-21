@@ -10,7 +10,7 @@ import { disallow } from 'feathers-hooks-common'
 
 const PlaylistService = () =>
 
-  <service name='videos'>
+  <service name='videos' multi>
 
     <hooks before update patch remove>
       {disallow()}

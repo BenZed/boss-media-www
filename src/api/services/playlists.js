@@ -8,15 +8,15 @@ import { disallow } from 'feathers-hooks-common'
 // Main
 /******************************************************************************/
 
-const PlaylistService = () =>
+const Playlists = () =>
 
   <service name='playlists' multi>
 
-    <hooks before update patch remove>
+    <hooks before update patch>
       {disallow()}
     </hooks>
 
-    <hooks before create>
+    <hooks before create remove>
       {disallow('external')}
     </hooks>
 
@@ -26,4 +26,4 @@ const PlaylistService = () =>
 // Exports
 /******************************************************************************/
 
-export default PlaylistService
+export default Playlists

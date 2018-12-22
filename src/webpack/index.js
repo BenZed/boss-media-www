@@ -32,12 +32,11 @@ if (DEV)
     const { ClientStateTree } = await import('@benzed/react')
     const { port } = await import('../../config/default.json')
 
+    // origin - webpack port + default server port
+    const host = location.origin.substr(0, location.origin.length - 4) + `${port}`
+
     const client = new ClientStateTree({
-      hosts: [
-        `http://174.7.245.241:${port}`,
-        `http://192.168.0.10:${port}`,
-        `http://localhost:${port}`
-      ],
+      hosts: host,
       provider: 'rest'
     })
 

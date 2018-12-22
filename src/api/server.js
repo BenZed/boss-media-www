@@ -1,12 +1,11 @@
 import App from '@benzed/app' // eslint-disable-line no-unused-vars
 import * as services from './services'
-import populate from './populate-from-youtube'
+import * as processes from './processes'
 
 /* @jsx App.declareEntity */
 /* eslint-disable react */
 
 // eslint-disable-next-line no-unused-vars
-const youtube = { populate }
 
 /******************************************************************************/
 // Main
@@ -20,7 +19,7 @@ const BossMediaServer = ({ port, logging, youtube }) =>
 
     <services.playlists />
     <services.videos />
-    <youtube.populate youtube={youtube} />
+    <processes.populate youtube={youtube} />
 
     <express-error />
 

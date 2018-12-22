@@ -64,14 +64,27 @@ const sortPlaylists = (videos, playlists) => {
   return playlists
 }
 
-const getLatestVideo = videos => videos
-  .reduce(
-    (a, b) =>
-      a.published > b.published
-        ? a
-        : b
+// const getLatest = videos =>
+
+const getLatest = (videos, playlists) => {
+
+  const video = videos.reduce((a, b) =>
+    a.published > b.published
+      ? a
+      : b
   )
 
+  const playlist = video && playlists
+    .filter(playlist => playlist
+      .videos
+      .some(v => v.id === video.id)
+    )
+    ::first()
+
+  return {
+    video, playlist
+  }
+}
 /******************************************************************************/
 // Styles
 /******************************************************************************/
@@ -95,14 +108,14 @@ const Website = ({ videos, playlists, black, orange, ...props }) => {
   const sanitizedPlaylists = sanitizePlaylists(playlists)
 
   const sortedPlaylists = sortPlaylists(sanitizedVideos, sanitizedPlaylists)
-  const latestVideo = getLatestVideo(sanitizedVideos)
+  const latest = getLatest(sanitizedVideos, sortedPlaylists)
 
   return <GlobalStyle theme={theme}>
 
     <WebsiteLayout image={black}>
 
-      <Routes playlists={sortedPlaylists} />
-      <Navigation image={orange} latestVideo={latestVideo}/>
+      <Routes playlists={sortedPlaylists} latest={latest} />
+      <Navigation image={orange} />
 
     </WebsiteLayout>
 

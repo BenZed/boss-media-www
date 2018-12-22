@@ -127,39 +127,41 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
   const size = many ? 1.25 : 2
   const showModal = many && !isMobile()
 
-  return <Page title={playlist.title} >
-    { showModal
-      ? <Visible visible={!!video}>
+  return <Slide from='right' to='top'>
+    <Page title={playlist.title} >
+      { showModal
+        ? <Visible visible={!!video}>
 
-        <Modal
-          visible={!!video}
-          position='fixed'
-          opacity={0.75}
-          onClick={goBack}>
+          <Modal
+            visible={!!video}
+            position='fixed'
+            opacity={0.75}
+            onClick={goBack}>
 
-          <Slide from='0em 15em' to='0em -15em'>
-            <Video video={video} size={2.25}/>
-          </Slide>
+            <Slide from='0em 15em' to='0em -15em'>
+              <Video video={video} size={2.25}/>
+            </Slide>
 
-        </Modal>
+          </Modal>
 
-      </Visible>
-      : null
-    }
+        </Visible>
+        : null
+      }
 
-    <Playlist>
-      {match && playlist?.videos.map(v =>
-        <VideoLink
-          key={v.id}
-          prefix={base}
-          video={v}
-          size={size}
-          playable={!showModal && v.id === video?.id}
-        />
-      )}
-    </Playlist>
+      <Playlist>
+        {playlist?.videos.map(v =>
+          <VideoLink
+            key={v.id}
+            prefix={base}
+            video={v}
+            size={size}
+            playable={!showModal && v.id === video?.id}
+          />
+        )}
+      </Playlist>
+    </Page>
+  </Slide>
 
-  </Page>
 }
 
 /******************************************************************************/

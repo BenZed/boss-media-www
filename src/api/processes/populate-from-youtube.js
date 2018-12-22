@@ -150,7 +150,7 @@ class YoutubeApi {
 
 /******************************************************************************/
 
-const PopulateFromYoutube = props => {
+const populate = props => {
 
   const { youtube: config } = props
 
@@ -184,4 +184,4 @@ const PopulateFromYoutube = props => {
 
 /******************************************************************************/
 
-export default PopulateFromYoutube
+export default populate

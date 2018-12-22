@@ -1,18 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Slide, Fade } from '@benzed/react'
-
-import $ from '../theme'
-import { media } from '../util'
-
 /******************************************************************************/
-//
+// Style
 /******************************************************************************/
 
 const Layout = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -25,11 +20,9 @@ const Layout = styled.div`
 /******************************************************************************/
 
 const Page = ({ children, path, exact, strict, delay, ...props }) =>
-  <Fade>
-    <Layout {...props}>
-      {children}
-    </Layout>
-  </Fade>
+  <Layout {...props}>
+    {children}
+  </Layout>
 
 /******************************************************************************/
 // Exports

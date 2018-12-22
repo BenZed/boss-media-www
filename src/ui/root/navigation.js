@@ -1,17 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Visible, Slide, Write } from '@benzed/react'
-
 import { withRouter, matchPath } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
-import { $ } from '../theme'
+import { Write } from '@benzed/react'
+
 import is from 'is-explicit'
 
+import { $ } from '../theme'
 import { media } from '../util'
-
-import { Video } from '../components'
 
 /******************************************************************************/
 // Helper
@@ -46,7 +44,22 @@ const titleLeftFromPage = ({ page }) => {
   return left
 }
 
-const fontSizeFromPage = (scale = 1) => ({ page }) => {
+const headerTextFromPage = page => {
+
+  let text = page === 'home'
+    ? 'media'
+    : page.replace(/-|_/g, ' ')
+
+  if (text.length > 25)
+    text = text.substr(0, 22) + '...'
+
+  return text.toUpperCase()
+
+}
+
+const fontSizeFromPage = (isSecondWord) => ({ page }) => {
+
+  const scale = isSecondWord && page !== 'home' ? 0.7 : 1
 
   let fontSize = `${10 * scale}vw`
 
@@ -89,7 +102,6 @@ const OrangeCover = styled.div`
   background-image: url(${$.prop('image')});
   background-size: cover;
   background-position: center center;
-  backface-visibility: hidden;
   clip-path: polygon(${polygonFromPage});
 
   transition: clip-path 250ms;
@@ -98,11 +110,7 @@ const OrangeCover = styled.div`
 
   overflow: hidden;
 
-  &.active {
-    opacity: 0.5;
-  }
-
-`::Visible.observe(true)
+`
 
 const Links = styled.div.attrs(props => ({
   children: props
@@ -122,8 +130,8 @@ const Links = styled.div.attrs(props => ({
 
   padding: 1em;
   position: fixed;
+  z-index: 750;
   font-family: monospace;
-  z-index: 2000;
   line-height: 1.25em;
 
   right: 0em;
@@ -152,26 +160,15 @@ const Links = styled.div.attrs(props => ({
   }
 `
 
-const Boss = styled(Header).attrs({
-  children: 'BOSS'
-})``
-
-const Media = styled(Header).attrs({
-  children: 'MEDIA'
-})`
-  margin-left: 0.2em;
-`
-
-const PageName = styled(Header).attrs({
-  children: props => <Write time={50}>{
-    props.page !== 'home'
-      ? props.page.toUpperCase().replace(/-/g, ' ')
-      : ''
+const WriteHeader = styled(Header).attrs({
+  children: props => <Write time={50} medthod='right'>{
+    headerTextFromPage(props.page)
   }</Write>
 })`
   margin-left: 0.4em;
   font-size: 8vw;
   color: ${$.ifProp('bg').theme.bg.else.theme.primary};
+  white-space: nowrap;
 `
 
 const TitleContainer = styled.div`
@@ -188,16 +185,15 @@ const TitleContainer = styled.div`
 
 const Title = styled(({ bg, children, page, ...rest }) =>
   <div {...rest}>
-    <Boss bg={bg} page={page} />
-    <Media bg={bg} page={page}/>
-    <PageName bg={bg} page={page} />
+    <Header bg={bg} page={page} >BOSS</Header>
+    <WriteHeader bg={bg} page={page} />
   </div>)`
   position: fixed;
 
   ${Header} {
-    font-size: ${fontSizeFromPage(1)};
-    &:nth-child(3) {
-      font-size: ${fontSizeFromPage(0.7)};
+    font-size: ${fontSizeFromPage()};
+    &:nth-child(2) {
+      font-size: ${fontSizeFromPage(true)};
     }
   }
 
@@ -206,28 +202,6 @@ const Title = styled(({ bg, children, page, ...rest }) =>
 
   transition: left 250ms;
 `
-// const Guide = styled.span`
-//   background-color: rgba(0,255,0,0.5);
-//   width: 1em;
-//   height: 1em;
-//
-//   top: calc(50% - 0.5em);
-//   left: calc(50% - 0.5em);
-//   border-radius: 50%;
-//   position: fixed;
-//   display: ${process.env.NODE_ENV === 'production' ? 'none' : 'initial'};
-// `
-
-const LatestVideo = styled(Video)`
-
-  position: fixed;
-
-  left: 50vw;
-  top: calc(10vw + 2em);
-
-  transform: translate(-50%, 0%);
-
-`
 
 /******************************************************************************/
 // Main Component
@@ -235,7 +209,7 @@ const LatestVideo = styled(Video)`
 
 const Navigation = (props) => {
 
-  const { location, image, latestVideo } = props
+  const { location, image } = props
 
   const page = getPage(location)
 
@@ -247,20 +221,16 @@ const Navigation = (props) => {
   ].filter(is.defined)
 
   return <>
-    <Links to={links}/>
 
     <TitleContainer page={page} />
-    <Title id='title-white' page={page} />
+    <Title page={page} />
 
     <OrangeCover image={image} page={page}>
-      <Title bg id='title-black' page={page} links={links} />
+      <Title bg page={page} links={links} />
     </OrangeCover>
 
-    <Visible visible={page === 'home'}>
-      <Slide from='left' to='right'>
-        <LatestVideo video={latestVideo} size={2.25} coverDirection='right'/>
-      </Slide>
-    </Visible>
+    <Links to={links}/>
+
   </>
 }
 

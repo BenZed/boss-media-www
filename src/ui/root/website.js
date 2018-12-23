@@ -102,7 +102,7 @@ const WebsiteLayout = styled.div`
 // Main
 /******************************************************************************/
 
-const Website = ({ videos, playlists, black, orange, ...props }) => {
+const Website = ({ videos, playlists, images, ...props }) => {
 
   const sanitizedVideos = sanitizeVideos(videos)
   const sanitizedPlaylists = sanitizePlaylists(playlists)
@@ -112,10 +112,10 @@ const Website = ({ videos, playlists, black, orange, ...props }) => {
 
   return <GlobalStyle theme={theme}>
 
-    <WebsiteLayout image={black}>
+    <WebsiteLayout image={images.black}>
 
       <Routes playlists={sortedPlaylists} latest={latest} />
-      <Navigation image={orange} />
+      <Navigation images={images} />
 
     </WebsiteLayout>
 

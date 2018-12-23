@@ -10,6 +10,7 @@ import is from 'is-explicit'
 
 import { $ } from '../theme'
 import { media } from '../util'
+import { YOUTUBE, FACEBOOK } from '../constants'
 
 /******************************************************************************/
 // Helper
@@ -79,7 +80,7 @@ const bottomFromPage = ({ page }) => {
 }
 
 /******************************************************************************/
-// Styles
+// Styled
 /******************************************************************************/
 
 const Header = styled.h1`
@@ -203,13 +204,51 @@ const Title = styled(({ bg, children, page, ...rest }) =>
   transition: left 250ms;
 `
 
+const SocialMediaLink = styled.a.attrs(({ icon }) => ({
+  style: {
+    backgroundImage: `url(${icon})`
+  },
+  target: '_blank'
+}))`
+  width: 1.5em;
+  height: 1.5em;
+
+  background-size: cover;
+  background-position: center;
+
+  transition: transform 500ms;
+
+  :first-child {
+    margin-right: 0.5em;
+  }
+
+  &:hover {
+    transform: scale(1.25, 1.25);
+  }
+`
+
+const SocialMediaLinks = styled.div.attrs(({ images }) => ({
+  children: [
+    <SocialMediaLink key='youtube' icon={images.youtube} href={YOUTUBE}/>,
+    <SocialMediaLink key='facebook' icon={images.facebook} href={FACEBOOK}/>
+  ]
+}))`
+  position: fixed;
+  bottom: 0.5em;
+  left: 0.5em;
+
+  display: flex;
+  flex-direction: row;
+  z-index: 800;
+`
+
 /******************************************************************************/
 // Main Component
 /******************************************************************************/
 
 const Navigation = (props) => {
 
-  const { location, image } = props
+  const { location, images } = props
 
   const page = getPage(location)
 
@@ -225,11 +264,13 @@ const Navigation = (props) => {
     <TitleContainer page={page} />
     <Title page={page} />
 
-    <OrangeCover image={image} page={page}>
+    <OrangeCover image={images.orange} page={page}>
       <Title bg page={page} links={links} />
     </OrangeCover>
 
     <Links to={links}/>
+
+    <SocialMediaLinks images={images} />
 
   </>
 }

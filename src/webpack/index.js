@@ -1,5 +1,5 @@
 import 'normalize.css'
-import './boss-media-www.css'
+import './index.css'
 
 /******************************************************************************/
 // Dynamic Dependencies
@@ -10,8 +10,10 @@ const dependencies = Promise.all([
   import('react-dom'),
   import('react-router-dom'),
   import('../ui'),
-  import('./bg-black.jpg'),
-  import('./bg-orange.jpg')
+  import('./assets/bg-black.jpg'),
+  import('./assets/bg-orange.jpg'),
+  import('./assets/facebook.png'),
+  import('./assets/youtube.png')
 ])
 
 /******************************************************************************/
@@ -82,7 +84,7 @@ const getMainTag = () =>
 // Execute
 /******************************************************************************/
 
-window.addEventListener('load', async () => {
+void async function () { // eslint-disable-line wrap-iife
 
   const [
     { default: React },
@@ -90,15 +92,19 @@ window.addEventListener('load', async () => {
     { BrowserRouter },
     { Website },
     { default: black },
-    { default: orange }
+    { default: orange },
+    { default: facebook },
+    { default: youtube }
   ] = await dependencies
 
   const props = await getServerProps()
   const main = getMainTag()
+  const images = { black, orange, facebook, youtube }
 
   const element = <BrowserRouter>
-    <Website orange={orange} black={black} {...props} />
+    <Website images={images} {...props} />
   </BrowserRouter>
 
   hydrate(element, main)
-})
+
+}()

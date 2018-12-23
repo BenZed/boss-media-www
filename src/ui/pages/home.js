@@ -12,7 +12,7 @@ import { Video } from '../components'
 // Styles
 /******************************************************************************/
 
-const Latest = styled(({ latest, ...rest }) => console.log(latest.playlist) ||
+const Latest = styled(({ latest, ...rest }) =>
   <div {...rest}>
 
     <Video video={latest?.video} size={2.25} coverDirection='right'/>

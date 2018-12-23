@@ -9,6 +9,8 @@ import { Flex, Modal, Slide, isMobile, Visible } from '@benzed/react'
 
 import { Link } from 'react-router-dom'
 
+import { MissingContainer } from './missing'
+
 import { urlify, media, $16x9 } from '../util'
 import $ from '../theme'
 
@@ -125,28 +127,39 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
 
   const many = playlist?.videos.length > 10
   const size = many ? 1.25 : 2
-  const showModal = many && !isMobile()
+  const showVideoModal = many && !isMobile() && !!video
+  const showMissingModal = !video && !!videoNameOrId
 
   return <Slide from='right' to='top'>
     <Page title={playlist.title} >
-      { showModal
-        ? <Visible visible={!!video}>
 
-          <Modal
-            visible={!!video}
-            position='fixed'
-            opacity={0.75}
-            onClick={goBack}>
+      <Modal
+        visible={showMissingModal}
+        position='fixed'
+        opacity={0.75}
+        onClick={goBack}>
 
-            <Slide from='0em 15em' to='0em -15em'>
-              <Video video={video} size={2.25}/>
-            </Slide>
+        <Slide from='bottom'>
+          <MissingContainer>
+            <p>"{videoNameOrId}" is not a {playlist.title} video.
+              Go <Link to={`/${base}`}>back</Link>!
+            </p>
+          </MissingContainer>
+        </Slide>
 
-          </Modal>
+      </Modal>
 
-        </Visible>
-        : null
-      }
+      <Modal
+        visible={showVideoModal}
+        position='fixed'
+        opacity={0.75}
+        onClick={goBack}>
+
+        <Slide from='0em 15em' to='0em -15em'>
+          <Video video={video} size={2.25}/>
+        </Slide>
+
+      </Modal>
 
       <Playlist>
         {playlist?.videos.map(v =>
@@ -155,10 +168,11 @@ const PlaylistPage = ({ playlist, match, location, history, ...props }) => {
             prefix={base}
             video={v}
             size={size}
-            playable={!showModal && v.id === video?.id}
+            playable={!showVideoModal && v.id === video?.id}
           />
         )}
       </Playlist>
+
     </Page>
   </Slide>
 

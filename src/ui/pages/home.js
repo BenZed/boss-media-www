@@ -18,7 +18,7 @@ const Latest = styled(({ latest, ...rest }) => console.log(latest.playlist) ||
     <Video video={latest?.video} size={2.25} coverDirection='right'/>
 
     <Link to={`/${urlify(latest.playlist.title)}`}>
-      More Boss {latest.playlist.title}
+      Previous Boss {latest.playlist.title}
     </Link>
 
   </div>)`

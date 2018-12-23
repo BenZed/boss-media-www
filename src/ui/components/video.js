@@ -71,10 +71,6 @@ const coverDirectionToTranslate = props => {
 // Styles
 /******************************************************************************/
 
-const Description = styled.div`
-  margin: 1em 0em 2em 0em;
-`
-
 const Cover = styled.div`
 
   width: 100%;
@@ -85,7 +81,7 @@ const Cover = styled.div`
   position: absolute;
   transition: transform 250ms;
 
-  z-index: 1000;
+  z-index: 900;
   background-color: ${$.theme.primary};
 
 `

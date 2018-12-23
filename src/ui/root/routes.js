@@ -9,6 +9,12 @@ import { copy } from '@benzed/immutable'
 import { urlify } from '../util'
 
 /******************************************************************************/
+// Data
+/******************************************************************************/
+
+const DELAY = 500
+
+/******************************************************************************/
 // Helper
 /******************************************************************************/
 
@@ -20,69 +26,58 @@ function toPath () {
 }
 
 /******************************************************************************/
-// Data
-/******************************************************************************/
-
-const VisibleRoute = withRouter(({
-  location, history, path,
-  exact, delay, strict,
-  component: Component,
-  ...rest
-}) => {
-
-  const match = matchPath(
-    location.pathname,
-    { exact, path, strict }
-  )::copy()
-
-  return <Visible visible={!!match} delay={delay}>
-    <Component location={location} history={history} {...rest} match={match}/>
-  </Visible>
-})
-
-/******************************************************************************/
 // Main
 /******************************************************************************/
 
-const Routes = ({ playlists, latest }) =>
-  <>
+const Switch = ({ location, playlists, latest, history }) => {
+  const routes = playlists.reduce((rs, playlist) => [
+    ...rs,
+    {
+      path: playlist.title::toPath(),
+      component: Playlist,
+      playlist
+    }
+  ], [
+    {
+      path: '/',
+      component: Home,
+      latest,
+      exact: true
+    }
+  ])
 
-    <VisibleRoute
-      path='/'
-      exact
-      delay={500}
-      component={Home}
-      latest={latest}
-    />
+  let matchFound = false
 
-    {/* TODO add back in
-    <VisibleRoute
-    key='about'
-    path='/about'
-    delay={400}
-    component={About}
-    /> */}
+  const elements = routes.map(({ exact, strict, path, component, ...rest }) => {
 
-    {playlists.map(playlist =>
-      <VisibleRoute
-        key={playlist.id}
-        path={playlist.title::toPath()}
-        delay={500}
-        component={Playlist}
-        playlist={playlist}
-      />
-    )}
+    const match = matchFound
+      ? null
+      : matchPath(
+        location.pathname,
+        { exact, path, strict }
+      )::copy()
 
-    <VisibleRoute
-      delay={500}
-      path='/404'
-      component={Missing}
-    />
+    if (match)
+      matchFound = true
 
-  </>
+    const Component = component
+
+    return <Visible visible={!!match} delay={DELAY} key={path}>
+      <Component location={location} history={history} {...rest} match={match}/>
+    </Visible>
+  })
+
+  return [
+    ...elements,
+    <Visible visible={!matchFound} delay={DELAY} key={null}>
+      <Missing />
+    </Visible>
+  ]
+
+}
 
 /******************************************************************************/
 // Exports
 /******************************************************************************/
 
-export default Routes
+export default withRouter(Switch)

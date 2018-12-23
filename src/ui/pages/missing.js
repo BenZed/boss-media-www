@@ -16,18 +16,19 @@ const Container = styled.div`
 
   p {
     font-size: 2em;
-    margin: 0em 0em 1em 0em;
+    font-family: monospace;
+    margin: 0em 1em 0em 0em;
   }
 
   a {
-    color: ${$.theme.primary};
-    z-index: 1000;
+    font-size: 1.5;
+    color: ${$.theme.bg};
     position: relative;
   }
 
   padding: 1em;
 
-  background-color: ${$.theme.bg.fade(0.5)};
+  background-color: ${$.theme.primary.fade(0.25)};
   width: 100%;
 
   display: flex;
@@ -47,13 +48,12 @@ const Missing = styled(Page)`
 /******************************************************************************/
 
 const MissingPage = props =>
-  <Slide from='bottom' to='left' >
+  <Slide from='top' to='bottom' >
     <Missing>
       <Container>
-        <Flex.Column>
-          <p>You must be lost!</p>
-          <Link to='/'>Latest</Link>
-        </Flex.Column>
+        <Flex.Row items='baseline' >
+          <p>You are lost. See our <Link to='/'>Latest Video</Link>!</p>
+        </Flex.Row>
       </Container>
     </Missing>
   </Slide>
@@ -63,3 +63,7 @@ const MissingPage = props =>
 /******************************************************************************/
 
 export default MissingPage
+
+export {
+  Container as MissingContainer
+}

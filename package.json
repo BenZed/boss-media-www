@@ -13,8 +13,8 @@
     "webpack:dev": "NODE_ENV=development webpack-dev-server",
     "serve": "node ./dist/scripts/serve.js",
     "serve:dev": "NODE_ENV=development nodemon --watch dist/api --watch config --watch dist/scripts -L ./dist/scripts/serve.js",
-    "build": "npm i && npm run babel && npm run webpack && npm run test",
-    "start": "npm run build && npm run serve"
+    "postinstall": "npm i && npm run babel && npm run webpack && npm run test",
+    "start": "npm run serve"
   },
   "keywords": [],
   "author": "BenZed",

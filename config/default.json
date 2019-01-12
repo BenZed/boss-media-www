@@ -1,6 +1,6 @@
 {
   "port": 7100,
-  "loggin": true,
+  "logging": true,
   "youtube": {
     "api_key": null,
     "user_name": null

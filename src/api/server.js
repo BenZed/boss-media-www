@@ -3,7 +3,7 @@ import App from '@benzed/app' // eslint-disable-line no-unused-vars
 import * as services from './services'
 import * as processes from './processes'
 
-import Website from '../ui/root'
+// import Website from '../ui/root'
 
 /* @jsx App.declareEntity */
 /* eslint-disable react */

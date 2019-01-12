@@ -1,6 +1,6 @@
 {
   "port": "PORT",
-  "loggin": true,
+  "logging": true,
   "youtube": {
     "api_key": "YOUTUBE_API_KEY",
     "user_name": "YOUTUBE_USER_NAME"

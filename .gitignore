@@ -7,4 +7,3 @@ dist/webpack
 dist
 storage
 development.json
-production.json

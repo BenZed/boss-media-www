@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Page from './Page'
+import Page from './page'
 import { Slide } from '@benzed/react'
 
 import { Link } from 'react-router-dom'

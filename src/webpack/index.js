@@ -61,10 +61,11 @@ if (DEV)
 
 else
   getServerProps = () => {
-    const serverPropsTag = document.getElementById('boss-media-www-server-props')
+    const serverPropsTag = document.getElementById('boss-media-www-serialized')
 
     let props
     try {
+      serverPropsTag.remove()
       props = JSON.parse(serverPropsTag.textContent)
     } catch (err) {
       // it could be that the server sent bad data, but generally any failure

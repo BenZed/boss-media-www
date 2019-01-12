@@ -102,7 +102,7 @@ const WebsiteLayout = styled.div`
 // Main
 /******************************************************************************/
 
-const Website = ({ videos, playlists, images, ...props }) => {
+const Website = ({ videos, playlists, images = {}, ...props }) => {
 
   const sanitizedVideos = sanitizeVideos(videos)
   const sanitizedPlaylists = sanitizePlaylists(playlists)

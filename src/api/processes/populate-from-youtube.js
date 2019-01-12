@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import { min } from '@benzed/math'
 
 /******************************************************************************/
 // Helper
@@ -63,28 +64,37 @@ class YoutubeApi {
   async getVideos (playlistId, pageToken = null) {
 
     const videoIds = await this.getPlaylistItemsIds(playlistId)
+    const videos = []
 
-    const res = await fetch(
-      `${YTAPIURL}videos` +
-      `?part=snippet` +
-      `&id=${videoIds}` +
-      `&maxResults=${MAX_RESULTS}` +
-      `&key=${this.apiKey}`
-    )
+    while (videoIds.length > 0) {
 
-    const json = await res.json()
+      const ids = videoIds.splice(0, min(videoIds.length, MAX_RESULTS))
 
-    const videos = (json.items || []).map(item => ({
+      const res = await fetch(
+        `${YTAPIURL}videos` +
+        `?part=snippet` +
+        `&id=${ids}` +
+        `&maxResults=${MAX_RESULTS}` +
+        `&key=${this.apiKey}`
+      )
 
-      id: item.id,
-      title: item.snippet?.title,
-      description: item.snippet?.description,
-      thumbnails: item.snippet?.thumbnails,
-      position: item.snippet?.position,
-      published: new Date(item.snippet?.publishedAt),
-      meta: this.parseTags(item.snippet?.tags)
+      const json = await res.json()
 
-    }))
+      const items = (json.items || []).map(item => ({
+
+        id: item.id,
+        title: item.snippet?.title,
+        description: item.snippet?.description,
+        thumbnails: item.snippet?.thumbnails,
+        position: item.snippet?.position,
+        published: new Date(item.snippet?.publishedAt),
+        meta: this.parseTags(item.snippet?.tags)
+
+      }))
+
+      videos.push(...items)
+
+    }
 
     return videos
 

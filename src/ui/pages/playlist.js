@@ -41,6 +41,17 @@ function navigateTo (base) {
 
 }
 
+const biggestThumbnail = thumbnails => {
+
+  const biggest = Object.values(thumbnails).reduce((big, thumb) =>
+    big.width * big.height > thumb.width * thumb.height
+      ? big
+      : thumb
+  )
+
+  return biggest.url
+}
+
 /******************************************************************************/
 // Move Me, this component will be reused TODO
 /******************************************************************************/
@@ -74,7 +85,7 @@ const VideoLink = styled(({ prefix, video, size, playable, ...rest }) =>
     <NoOverflowLink
       to={`/${prefix}/${urlify(video.title)}`}
       style={{
-        backgroundImage: `url(${video.thumbnails.maxres.url})`
+        backgroundImage: `url(${biggestThumbnail(video.thumbnails)})`
       }}
     >
       <Title shown={!playable}>{video.title}</Title>

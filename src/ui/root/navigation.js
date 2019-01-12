@@ -161,11 +161,11 @@ const Links = styled.div.attrs(props => ({
   }
 `
 
-const WriteHeader = styled(Header).attrs({
-  children: props => <Write time={50} medthod='right'>{
+const WriteHeader = styled(Header).attrs(props => ({
+  children: <Write time={50} medthod='right'>{
     headerTextFromPage(props.page)
   }</Write>
-})`
+}))`
   margin-left: 0.4em;
   font-size: 8vw;
   color: ${$.ifProp('bg').theme.bg.else.theme.primary};

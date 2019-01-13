@@ -50,8 +50,10 @@ const wtf = app => {
   const result = app::isApp()
   if (result)
     console.log('definetly is an app')
-  else if (!is.object(app))
+
+  else if (app !== null && typeof app === 'object')
     console.log('app is not considered an object???')
+
   else for (const method of METHODS)
     if (!is.func(app[method]))
       console.log(`app ${method} is not a function`)

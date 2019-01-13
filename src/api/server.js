@@ -30,45 +30,12 @@ const hardcodeServiceData = async (req, res) => {
 }
 
 /******************************************************************************/
-// TODO Remove when you figure out wtf is wrong heroku side
-/******************************************************************************/
-
-const METHODS = [
-  'get', 'set', 'configure', 'use', 'service'
-]
-
-function isApp (app) {
-  if (this !== undefined)
-    app = this
-
-  return is.object(app) && METHODS.every(method => is.func(app[method]))
-
-}
-
-const wtf = app => {
-
-  const result = app::isApp()
-  if (result)
-    console.log('definetly is an app')
-
-  else if (typeof app !== 'object')
-    console.log('app is not considered an object:', typeof app)
-
-  else for (const method of METHODS)
-    if (!is.func(app[method]))
-      console.log(`app ${method} is not a function`)
-
-}
-
-/******************************************************************************/
 // Main
 /******************************************************************************/
 
 const BossMediaServer = ({ port, logging, youtube }) =>
 
   <app port={port} logging={logging}>
-
-    {wtf}
 
     <express />
 

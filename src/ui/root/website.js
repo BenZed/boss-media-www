@@ -6,7 +6,7 @@ import Routes from './routes'
 
 import { GlobalStyle } from '@benzed/react'
 import { pluck, first } from '@benzed/array'
-import { copy } from '@benzed/immutable'
+import { copy, sort } from '@benzed/immutable'
 
 import { theme } from '../theme'
 
@@ -19,6 +19,13 @@ import is from 'is-explicit'
 const fix = title => title
   .replace(/^boss\shq\s-?/i, '')
   .trim()
+
+const byPublishDate = (a, b) =>
+  a.published > b.published
+    ? -1
+    : a.published < b.published
+      ? 1
+      : 0
 
 const sanitizeVideos = videos => {
 
@@ -43,6 +50,8 @@ const sortPlaylists = (videos, playlists) => {
     video.title = fix(video.title)
     video.published = new Date(video.published)
   }
+
+  videos = videos::sort(byPublishDate)
 
   for (const playlist of playlists)
     playlist.videos = playlist

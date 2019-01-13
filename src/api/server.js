@@ -52,7 +52,7 @@ const wtf = app => {
     console.log('definetly is an app')
 
   else if (typeof app !== 'object')
-    console.log('app is not considered an object???')
+    console.log('app is not considered an object:', typeof app)
 
   else for (const method of METHODS)
     if (!is.func(app[method]))

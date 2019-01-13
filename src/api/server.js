@@ -27,6 +27,8 @@ const hardcodeServiceData = async (req, res) => {
 
 }
 
+const wtf = app => console.log(app)
+
 /******************************************************************************/
 // Main
 /******************************************************************************/
@@ -34,6 +36,8 @@ const hardcodeServiceData = async (req, res) => {
 const BossMediaServer = ({ port, logging, youtube }) =>
 
   <app port={port} logging={logging}>
+
+    {wtf}
 
     <express />
 

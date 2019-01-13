@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const port = require('./config/default.json').port - 100
+const TerserPlugin = require('terser-webpack-plugin')
 
 /******************************************************************************/
 // Production
@@ -45,6 +46,18 @@ if (process.env.NODE_ENV !== 'production' && fs.existsSync(BENZED)) {
 
   webpackConfig = new WebpackConfig({ port })
 }
+
+/******************************************************************************/
+// Test
+/******************************************************************************/
+
+webpackConfig.optimization.minimizer = [
+  new TerserPlugin({
+    terserOptions: {
+      mangle: false
+    }
+  })
+]
 
 /******************************************************************************/
 // Exports

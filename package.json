@@ -1,7 +1,11 @@
 {
   "name": "boss-media-www",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist",
+  "engines": {
+    "node": "11.6.x",
+    "npm": "6.4.x"
+  },
   "scripts": {
     "update": "npx ncu -u -a",
     "lint": "eslint src --fix",

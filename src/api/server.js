@@ -27,7 +27,17 @@ const hardcodeServiceData = async (req, res) => {
 
 }
 
-const wtf = app => console.log(app)
+const wtf = app => {
+
+  function test () {
+
+    console.log(this !== undefined ? ':: seems to work' : ':: does NOT seem to work')
+
+  }
+
+  app::test()
+
+}
 
 /******************************************************************************/
 // Main

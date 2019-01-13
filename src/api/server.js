@@ -3,6 +3,8 @@ import App from '@benzed/app' // eslint-disable-line no-unused-vars
 import * as services from './services'
 import * as processes from './processes'
 
+import is from 'is-explicit'
+
 // import Website from '../ui/root'
 
 /* @jsx App.declareEntity */
@@ -27,15 +29,32 @@ const hardcodeServiceData = async (req, res) => {
 
 }
 
+/******************************************************************************/
+// TODO Remove when you figure out wtf is wrong heroku side
+/******************************************************************************/
+
+const METHODS = [
+  'get', 'set', 'configure', 'use', 'service'
+]
+
+function isApp (app) {
+  if (this !== undefined)
+    app = this
+
+  return is.object(app) && METHODS.every(method => is.func(app[method]))
+
+}
+
 const wtf = app => {
 
-  function test () {
-
-    console.log(this !== undefined ? ':: seems to work' : ':: does NOT seem to work')
-
-  }
-
-  app::test()
+  const result = app::isApp()
+  if (result)
+    console.log('definetly is an app')
+  else if (!is.object(app))
+    console.log('app is not considered an object???')
+  else for (const method of METHODS)
+    if (!is.func(app[method]))
+      console.log(`app ${method} is not a function`)
 
 }
 

@@ -5,7 +5,7 @@ import Navigation from './navigation'
 import Routes from './routes'
 
 import { GlobalStyle } from '@benzed/react'
-import { pluck, first } from '@benzed/array'
+import { first } from '@benzed/array'
 import { copy, sort } from '@benzed/immutable'
 
 import { theme } from '../theme'
@@ -33,6 +33,8 @@ const sanitizeVideos = videos => {
 
   for (const video of videos)
     sanitized.push(video::copy(video => {
+      // TODO HQ should be it's own playlist, rather than parsing the video name.
+      video.hq = /^boss\shq\s-?/i.test(video.title)
       video.title = fix(video.title)
       video.published = new Date(video.published)
     }))
@@ -57,18 +59,18 @@ const sortPlaylists = (videos, playlists) => {
     playlist.videos = playlist
       .videos
       .map(id => videos
-        ::pluck(vid => vid.id === id, 1)
+        .filter(vid => vid.id === id)
         ::first()
       )
       .filter(is.defined)
 
-  if (videos.length > 0)
-    playlists.push({
-      id: null,
-      title: 'HQ',
-      description: 'Behind the Scenes of Boss Media',
-      videos
-    })
+  // TODO Remove when HQ is it's own playlist
+  playlists.push({
+    id: null,
+    title: 'HQ',
+    description: 'Behind the Scenes of Boss Media',
+    videos: videos.filter(vid => vid.hq)
+  })
 
   return playlists
 }

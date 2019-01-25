@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { min } from '@benzed/math'
+import { scheduleJob } from 'node-schedule'
 
 /******************************************************************************/
 // Helper
@@ -7,6 +8,7 @@ import { min } from '@benzed/math'
 
 const YTAPIURL = 'https://www.googleapis.com/youtube/v3/'
 const MAX_RESULTS = 50
+const EVERY_FRIDAY_AT_430_PM = { hour: 16, minute: 30, dayOfWeek: 5 }
 
 /******************************************************************************/
 // Youtube Api
@@ -155,37 +157,48 @@ class YoutubeApi {
   }
 
 }
+
 /******************************************************************************/
 // Main
-
 /******************************************************************************/
 
 const populate = props => {
 
   const { youtube: config } = props
 
-  const api = new YoutubeApi(config)
+  const youtubeApi = new YoutubeApi(config)
 
-  return async app => {
+  return app => {
 
-    try {
+    const populateFromYoutube = async () => {
+      try {
 
-      const [ channelId, uploadPlaylistId ] = await api.getChannelAndUploads()
+        const [ channelId, uploadPlaylistId ] = await youtubeApi.getChannelAndUploads()
 
-      const videos = await api.getVideos(uploadPlaylistId)
+        const videos = await youtubeApi.getVideos(uploadPlaylistId)
 
-      await app.service('videos').create(videos)
+        await app.service('videos').remove(null)
+        await app.service('videos').create(videos)
 
-      const playlists = await api.getPlaylists(channelId)
-      await app.service('playlists').create(playlists)
+        const playlists = await youtubeApi.getPlaylists(channelId)
 
-      app.log`${videos.length} videos fetched from youtube`
-      app.log`${playlists.length} playlists fetched from youtube`
+        await app.service('playlists').remove(null)
+        await app.service('playlists').create(playlists)
 
-    } catch (err) {
+        app.log`populate-from-youtube ${videos.length} videos fetched from youtube`
+        app.log`populate-from-youtube ${playlists.length} playlists fetched from youtube`
 
-      app.log`information could not be fetched from youtube: ${err.message}`
+      } catch (err) {
+
+        app.log`information could not be fetched from youtube: ${err.message}`
+      }
     }
+
+    scheduleJob(EVERY_FRIDAY_AT_430_PM, populateFromYoutube)
+    app.log`populate-from-youtube scheduled every friday at 4:30pm`
+
+    // also do it right now
+    return populateFromYoutube()
 
   }
 }

@@ -176,17 +176,20 @@ const populate = props => {
         const [ channelId, uploadPlaylistId ] = await youtubeApi.getChannelAndUploads()
 
         const videos = await youtubeApi.getVideos(uploadPlaylistId)
-
-        await app.service('videos').remove(null)
-        await app.service('videos').create(videos)
+        app.log`populate-from-youtube ${videos.length} videos fetched from youtube`
 
         const playlists = await youtubeApi.getPlaylists(channelId)
-
-        await app.service('playlists').remove(null)
-        await app.service('playlists').create(playlists)
-
-        app.log`populate-from-youtube ${videos.length} videos fetched from youtube`
         app.log`populate-from-youtube ${playlists.length} playlists fetched from youtube`
+
+        await Promise.all([
+          app.service('videos').remove(null),
+          app.service('playlists').remove(null)
+        ])
+
+        await Promise.all([
+          app.service('videos').create(videos),
+          app.service('playlists').create(playlists)
+        ])
 
       } catch (err) {
 

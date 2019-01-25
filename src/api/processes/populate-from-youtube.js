@@ -8,7 +8,7 @@ import { scheduleJob } from 'node-schedule'
 
 const YTAPIURL = 'https://www.googleapis.com/youtube/v3/'
 const MAX_RESULTS = 50
-const EVERY_FRIDAY_AT_430_PM = { hour: 16, minute: 30, dayOfWeek: 5 }
+const EVERY_FRIDAY_AT_431_PM = { hour: 16, minute: 31, dayOfWeek: 5 }
 
 /******************************************************************************/
 // Youtube Api
@@ -194,8 +194,8 @@ const populate = props => {
       }
     }
 
-    scheduleJob(EVERY_FRIDAY_AT_430_PM, populateFromYoutube)
-    app.log`populate-from-youtube scheduled every friday at 4:30pm`
+    scheduleJob(EVERY_FRIDAY_AT_431_PM, populateFromYoutube)
+    app.log`populate-from-youtube scheduled every friday at 4:31pm`
 
     // also do it right now
     return populateFromYoutube()

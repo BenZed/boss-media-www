@@ -10,7 +10,7 @@ import is from 'is-explicit'
 
 import { $ } from '../theme'
 import { media } from '../util'
-import { YOUTUBE, FACEBOOK } from '../constants'
+import { YOUTUBE, FACEBOOK, NAV_PLAYLISTS } from '../constants'
 
 /******************************************************************************/
 // Helper
@@ -253,8 +253,7 @@ const Navigation = (props) => {
   const page = getPage(location)
 
   const links = [
-    'hq',
-    'shorts',
+    ...NAV_PLAYLISTS.map(name => name.toLowerCase()),
     // 'about', TODO add back in
     'latest'
   ].filter(is.defined)

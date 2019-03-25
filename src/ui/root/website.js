@@ -9,12 +9,34 @@ import { first } from '@benzed/array'
 import { copy, sort } from '@benzed/immutable'
 
 import { theme } from '../theme'
+import { NAV_PLAYLISTS } from '../constants'
 
 import is from 'is-explicit'
 
 /******************************************************************************/
 // Helper
 /******************************************************************************/
+
+// TODO maybe move to @benzed/array?
+function favourite (...args) {
+
+  let arr
+  let tests
+  if (this !== undefined) {
+    arr = this
+    tests = args
+  } else {
+    arr = args.shift()
+    tests = args
+  }
+
+  for (const test of tests)
+    for (let i = 0; i < arr.length; i++)
+      if (test(arr[i], i, arr))
+        return arr[i]
+
+  return first(arr)
+}
 
 const fix = title => title
   .replace(/^boss\shq\s-?/i, '')
@@ -31,13 +53,16 @@ const sanitizeVideos = videos => {
 
   const sanitized = []
 
-  for (const video of videos)
-    sanitized.push(video::copy(video => {
-      // TODO HQ should be it's own playlist, rather than parsing the video name.
-      video.hq = /^boss\shq\s-?/i.test(video.title)
-      video.title = fix(video.title)
-      video.published = new Date(video.published)
-    }))
+  for (let video of videos) {
+    video = video::copy()
+
+    // TODO HQ should be it's own playlist, rather than parsing the video name.
+    video.hq = /^boss\shq\s-?/i.test(video.title)
+    video.title = fix(video.title)
+    video.published = new Date(video.published)
+
+    sanitized.push(video)
+  }
 
   return sanitized
 }
@@ -48,13 +73,6 @@ const sortPlaylists = (videos, playlists) => {
 
   playlists = playlists::copy()
 
-  for (const video of videos) {
-    video.title = fix(video.title)
-    video.published = new Date(video.published)
-  }
-
-  videos = videos::sort(byPublishDate)
-
   for (const playlist of playlists)
     playlist.videos = playlist
       .videos
@@ -63,6 +81,7 @@ const sortPlaylists = (videos, playlists) => {
         ::first()
       )
       .filter(is.defined)
+      ::sort(byPublishDate)
 
   // TODO Remove when HQ is it's own playlist
   playlists.push({
@@ -74,8 +93,6 @@ const sortPlaylists = (videos, playlists) => {
 
   return playlists
 }
-
-// const getLatest = videos =>
 
 const getLatest = (videos, playlists) => {
 
@@ -90,12 +107,15 @@ const getLatest = (videos, playlists) => {
       .videos
       .some(v => v.id === video.id)
     )
-    ::first()
+    // if a video belonds to multiple playlists, favour a playlist that's already
+    // linked on the nav
+    ::favourite(p => NAV_PLAYLISTS.includes(p.title))
 
   return {
     video, playlist
   }
 }
+
 /******************************************************************************/
 // Styles
 /******************************************************************************/
@@ -116,6 +136,7 @@ const WebsiteLayout = styled.div`
 const Website = ({ videos, playlists, images = {}, ...props }) => {
 
   const sanitizedVideos = sanitizeVideos(videos)
+
   const sanitizedPlaylists = sanitizePlaylists(playlists)
 
   const sortedPlaylists = sortPlaylists(sanitizedVideos, sanitizedPlaylists)

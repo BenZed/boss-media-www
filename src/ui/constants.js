@@ -14,3 +14,5 @@ export const MINI_MULT = 0.5
 export const YOUTUBE = 'https://www.youtube.com/user/BossMediaVideos'
 
 export const FACEBOOK = 'https://www.facebook.com/BossMediaVideos/'
+
+export const NAV_PLAYLISTS = [ 'HQ', 'Shorts' ]

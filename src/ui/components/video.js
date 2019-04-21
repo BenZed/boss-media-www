@@ -103,6 +103,61 @@ const Container = styled.div`
 // Main Component
 /******************************************************************************/
 
+// TODO hookify everything
+// import { useState, useEffect } from 'react'
+//
+// const Video_ = props => {
+//
+//   const [ loaded, setLoaded ] = useState(false)
+//   const [ videoId, setVideoId ] = useState(null)c
+//   const visibility = useVisibility()
+//
+//   const { video, size, units, autoplay, coverDirection, ...rest } = props
+//
+//   useEffect(() => {
+//     setVideoId(video.id)
+//
+//     let timerId = null
+//
+//     if (video.id)
+//       timerId = setTimeout(() => setLoaded(true), 1000)
+//     else
+//       setLoaded(false)
+//
+//     return () => {
+//       if (timerId !== null)
+//         clearTimeout(timerId)
+//     }
+//
+//   }, [ video?.id ])
+//
+//   const showing = visibility === 'showing'
+//   const readyToPlay = videoId && loaded
+//
+//   return video
+//     ? <Container
+//       size={size}
+//       units={units}
+//       ref={this.getRef}
+//       visibility={visibility}
+//       {...rest}
+//     >
+//       <Cover
+//         coverDirection={coverDirection}
+//         preloading={showing}
+//         loaded={readyToPlay}
+//       />
+//
+//       { videoId
+//         ? <Player videoId={videoId} autoplay={autoplay} />
+//         : null
+//       }
+//
+//     </Container>
+//     : null
+//
+// }
+
 class Video extends React.Component {
 
   state = {
@@ -136,29 +191,33 @@ class Video extends React.Component {
   }
 
   render () {
-    const { size, units, visibility, autoplay, coverDirection, ...rest } = this.props
+    const { size, units, visibility, autoplay, coverDirection, video, ...rest } = this.props
     const { loaded, videoId } = this.state
 
     const showing = visibility === 'showing'
     const readyToPlay = videoId && loaded
 
-    return <Container
-      size={size}
-      units={units}
-      ref={this.getRef}
-      visibility={visibility}
-      {...rest}
-    >
-      <Cover
-        preloading={showing}
-        loaded={readyToPlay}
-        coverDirection={coverDirection}
-      />
-      { videoId
-        ? <Player videoId={videoId} autoplay={autoplay} />
-        : null
-      }
-    </Container>
+    return video
+      ? <Container
+        size={size}
+        units={units}
+        ref={this.getRef}
+        visibility={visibility}
+        {...rest}
+      >
+        <Cover
+          preloading={showing}
+          loaded={readyToPlay}
+          coverDirection={coverDirection}
+        />
+
+        { videoId
+          ? <Player videoId={videoId} autoplay={autoplay} />
+          : null
+        }
+
+      </Container>
+      : null
 
   }
 

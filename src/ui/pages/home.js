@@ -15,11 +15,16 @@ import { Video } from '../components'
 const Latest = styled(({ latest, ...rest }) =>
   <div {...rest}>
 
-    <Video video={latest?.video} size={2.25} coverDirection='right'/>
+    <Video video={latest.video} size={2.25} coverDirection='right'/>
 
-    <Link to={`/${urlify(latest.playlist.title)}`}>
-      Previous Boss {latest.playlist.title}
-    </Link>
+    {
+      latest?.playlist?.title
+        ? <Link to={`/${urlify(latest.playlist.title)}`}>
+            Previous Boss {latest.playlist.title}
+        </Link>
+
+        : null
+    }
 
   </div>)`
 

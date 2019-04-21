@@ -79,11 +79,12 @@ const sortPlaylists = (videos, playlists) => {
 
 const getLatest = (videos, playlists) => {
 
-  const video = videos.reduce((a, b) =>
-    a.published > b.published
-      ? a
-      : b
-  )
+  const video = videos.length > 1
+    ? videos.reduce((a, b) =>
+      a.published > b.published
+        ? a
+        : b)
+    : videos[0]
 
   const playlist = video && playlists
     .filter(playlist => playlist

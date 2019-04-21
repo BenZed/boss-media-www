@@ -1,5 +1,6 @@
 import 'normalize.css'
 import './index.css'
+import * as assets from './assets'
 
 /******************************************************************************/
 // Dynamic Dependencies
@@ -9,11 +10,7 @@ const dependencies = Promise.all([
   import('react'),
   import('react-dom'),
   import('react-router-dom'),
-  import('../ui'),
-  import('./assets/bg-black.jpg'),
-  import('./assets/bg-orange.jpg'),
-  import('./assets/facebook.png'),
-  import('./assets/youtube.png')
+  import('../ui')
 ])
 
 /******************************************************************************/
@@ -91,19 +88,14 @@ void async function () { // eslint-disable-line wrap-iife
     { default: React },
     { hydrate },
     { BrowserRouter },
-    { Website },
-    { default: black },
-    { default: orange },
-    { default: facebook },
-    { default: youtube }
+    { Website }
   ] = await dependencies
 
   const props = await getServerProps()
   const main = getMainTag()
-  const images = { black, orange, facebook, youtube }
 
   const element = <BrowserRouter>
-    <Website images={images} {...props} />
+    <Website images={assets} {...props} />
   </BrowserRouter>
 
   hydrate(element, main)

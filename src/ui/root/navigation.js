@@ -10,7 +10,7 @@ import is from 'is-explicit'
 
 import { $ } from '../theme'
 import { media } from '../util'
-import { YOUTUBE, FACEBOOK } from '../constants'
+import { YOUTUBE, FACEBOOK, INSTAGRAM } from '../constants'
 
 /******************************************************************************/
 // Helper
@@ -218,7 +218,7 @@ const SocialMediaLink = styled.a.attrs(({ icon }) => ({
 
   transition: transform 500ms;
 
-  :first-child {
+  :not(:last-child) {
     margin-right: 0.5em;
   }
 
@@ -230,7 +230,8 @@ const SocialMediaLink = styled.a.attrs(({ icon }) => ({
 const SocialMediaLinks = styled.div.attrs(({ images }) => ({
   children: [
     <SocialMediaLink key='youtube' icon={images.youtube} href={YOUTUBE}/>,
-    <SocialMediaLink key='facebook' icon={images.facebook} href={FACEBOOK}/>
+    <SocialMediaLink key='facebook' icon={images.facebook} href={FACEBOOK}/>,
+    <SocialMediaLink key='instagram' icon={images.instagram} href={INSTAGRAM}/>
   ]
 }))`
   position: fixed;

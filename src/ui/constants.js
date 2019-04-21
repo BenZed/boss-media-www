@@ -16,3 +16,5 @@ export const YOUTUBE = 'https://www.youtube.com/user/BossMediaVideos'
 export const FACEBOOK = 'https://www.facebook.com/BossMediaVideos/'
 
 export const INSTAGRAM = 'https://www.instagram.com/bossmedia_hq/'
+
+export const NAV_PLAYLISTS = [ 'HQ', 'Shorts' ]

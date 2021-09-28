@@ -1,8 +1,0 @@
-{
-  "port": 5300,
-  "logging": true,
-  "youtube": {
-    "api_key": null,
-    "user_name": null
-  }
-}

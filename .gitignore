@@ -1,9 +1,4 @@
-.DS_STORE
+public
+lib
 node_modules
-
-*.temp*
-*-old*
-dist/webpack
-dist
-storage
-development.json
+.DS_Store

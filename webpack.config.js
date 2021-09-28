@@ -1,66 +1,99 @@
-const fs = require('fs')
+/* global require process module __dirname */
+
+/* eslint-disable 
+    @typescript-eslint/no-var-requires,
+    @typescript-eslint/no-unsafe-call,
+    @typescript-eslint/no-unsafe-assignment,
+    @typescript-eslint/no-unsafe-member-access
+*/
+
+// Requires
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { EnvironmentPlugin } = require('webpack')
+const styledComponentsTransformer =
+    require('typescript-plugin-styled-components').default()
+
 const path = require('path')
-const port = require('./config/default.json').port - 100
-const TerserPlugin = require('terser-webpack-plugin')
 
-/******************************************************************************/
-// Production
-/******************************************************************************/
+// Data 
 
-let webpackConfig
+const OUTPUT = path.resolve(__dirname, 'public')
+const PORT = 7000
 
-/******************************************************************************/
-// Development
-/******************************************************************************/
+const mode = process.env.NODE_ENV || 'development'
 
-// HACK
-// This just links everything to the locally installed @benzed repos if they
-// exist. Once those repos are a little more v 1.0 friendly, this can be removed.
-
-const BENZED = path.resolve(__dirname, '../benzed-mono')
-
-if (process.env.NODE_ENV !== 'production' && fs.existsSync(BENZED)) {
-
-  const BENZED_HOISTED = path.resolve(BENZED, 'bootstrap', 'node_modules')
-  const BENZED_PKG = path.resolve(BENZED, 'packages')
-  const names = fs.readdirSync(BENZED_PKG)
-
-  const { WebpackConfig } = require(path.join(BENZED_PKG, 'dev'))
-  webpackConfig = new WebpackConfig({ port })
-
-  // Resolve BenZed node_modules
-  webpackConfig.resolve.modules = [ 'node_modules', BENZED_HOISTED ]
-
-  // Alias BenZed Packages
-  webpackConfig.resolve.alias = {}
-  for (const name of names)
-    webpackConfig.resolve.alias[`@benzed/${name}`] = path.join(BENZED_PKG, name)
-
-  // Two seperate styled-components installations will fuck everything up
-  webpackConfig.resolve.alias['styled-components'] = path.join(BENZED_HOISTED, 'styled-components')
-  webpackConfig.resolve.alias['react-dom'] = path.join(BENZED_HOISTED, 'react-dom')
-
-} else {
-
-  const { WebpackConfig } = require('@benzed/dev')
-
-  webpackConfig = new WebpackConfig({ port })
+const ENV = {
+    ENV: mode
 }
 
-/******************************************************************************/
-// Test
-/******************************************************************************/
+// Config
+module.exports = {
 
-webpackConfig.optimization.minimizer = [
-  new TerserPlugin({
-    terserOptions: {
-      mangle: false
-    }
-  })
-]
+    mode,
 
-/******************************************************************************/
-// Exports
-/******************************************************************************/
+    entry: './src/client/index.tsx',
 
-module.exports = webpackConfig
+    output: {
+        filename: 'boss-media-www.js',
+        path: OUTPUT,
+        publicPath: '/'
+    },
+
+    devServer: {
+        compress: true,
+        port: PORT,
+        historyApiFallback: true,
+        host: '0.0.0.0'
+    },
+
+    devtool: 'inline-source-map',
+
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/i,
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        getCustomTransformers: () => ({
+                            before: [styledComponentsTransformer]
+                        })
+                    }
+                },
+                exclude: /node_modules/,
+
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.(svg|png|jpe?g|gif)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name]@[contenthash].[ext]'
+                    }
+                }
+            }
+        ],
+    },
+
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    },
+
+    plugins: [
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'Global Mechanic Asset Review Tool',
+            template: './src/client/index.html',
+            inject: 'head'
+        }),
+        new EnvironmentPlugin(ENV)
+    ]
+
+}
